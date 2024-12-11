@@ -8,10 +8,6 @@ import (
 	"sync"
 )
 
-func GetFileName() string {
-	return "day2.txt"
-}
-
 func HandleFirst(input []string) int {
 	// Create int slices
 	reports := createIntSlices(input)

@@ -7,10 +7,6 @@ import (
 	"strings"
 )
 
-func GetFileName() string {
-	return "day1.txt"
-}
-
 func HandleFirst(input []string) int {
 	// Change to 2 int slices
 	left, right := createIntSlices(input)
