@@ -7,25 +7,13 @@ import (
 	"strings"
 )
 
-type Day1 struct {
-	input []string
-}
-
 func GetFileName() string {
 	return "day1.txt"
 }
 
-func CreateAssignment(input []string) Day1 {
-	assignment := Day1{
-		input: input,
-	}
-
-	return assignment
-}
-
-func (assignment Day1) HandleFirst() int {
+func HandleFirst(input []string) int {
 	// Change to 2 int slices
-	left, right := createIntSlices(assignment.input)
+	left, right := createIntSlices(input)
 
 	// Order slices
 	slices.Sort(left)
@@ -41,9 +29,9 @@ func (assignment Day1) HandleFirst() int {
 	return int(sum)
 }
 
-func (assignment Day1) HandleSecond() int {
+func HandleSecond(input []string) int {
 	// Change to 2 int slices
-	left, right := createIntSlices(assignment.input)
+	left, right := createIntSlices(input)
 
 	// Map right to distinct entries with number of occurrences
 	rightMap := make(map[int]int)

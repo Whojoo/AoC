@@ -10,7 +10,11 @@ import (
 
 func main() {
 	fileName := day1.GetFileName()
-	file, _ := os.Open(fileName)
+	file, err := os.Open(fileName)
+	if err != nil {
+		panic(err)
+	}
+
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
@@ -19,9 +23,8 @@ func main() {
 		input = append(input, scanner.Text())
 	}
 
-	assignment := day1.CreateAssignment(input)
-	firstResult := assignment.HandleFirst()
-	secondResult := assignment.HandleSecond()
+	firstResult := day1.HandleFirst(input)
+	secondResult := day1.HandleSecond(input)
 
 	fmt.Printf("First assignment result: %v\n", firstResult)
 	fmt.Printf("Second assignment result: %v\n", secondResult)
