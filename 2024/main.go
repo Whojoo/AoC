@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Whojoo/AoC/2024/day1"
+	"github.com/Whojoo/AoC/2024/day2"
 )
 
 func main() {
-	fileName := day1.GetFileName()
+	fileName := day2.GetFileName()
 	file, err := os.Open(fileName)
 	if err != nil {
 		panic(err)
@@ -28,8 +28,8 @@ func main() {
 		input = append(input, scanner.Text())
 	}
 
-	firstResult := day1.HandleFirst(input)
-	secondResult := day1.HandleSecond(input)
+	firstResult := day2.HandleFirst(input)
+	secondResult := day2.HandleSecond(input)
 
 	fmt.Printf("First assignment result: %v\n", firstResult)
 	fmt.Printf("Second assignment result: %v\n", secondResult)

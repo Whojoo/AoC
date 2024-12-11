@@ -1,25 +1,25 @@
-package day1_test
+package day2_test
 
 import (
 	"testing"
 
-	"github.com/Whojoo/AoC/2024/day1"
+	"github.com/Whojoo/AoC/2024/day2"
 )
 
 func TestHandleFirst(t *testing.T) {
 	// Arrange
 	input := []string{
-		"3   4",
-		"4   3",
-		"2   5",
-		"1   3",
-		"3   9",
-		"3   3",
+		"7 6 4 2 1",
+		"1 2 7 8 9",
+		"9 7 6 2 1",
+		"1 3 2 4 5",
+		"8 6 4 4 1",
+		"1 3 6 7 9",
 	}
-	want := 11
+	want := 2
 
 	// Act
-	got := day1.HandleFirst(input)
+	got := day2.HandleFirst(input)
 
 	// Assert
 	if got != want {
@@ -30,17 +30,17 @@ func TestHandleFirst(t *testing.T) {
 func TestHandleSecond(t *testing.T) {
 	// Arrange
 	input := []string{
-		"3   4",
-		"4   3",
-		"2   5",
-		"1   3",
-		"3   9",
-		"3   3",
+		"7 6 4 2 1",
+		"1 2 7 8 9",
+		"9 7 6 2 1",
+		"1 3 2 4 5",
+		"8 6 4 4 1",
+		"1 3 6 7 9",
 	}
-	want := 31
+	want := 4
 
 	// Act
-	got := day1.HandleSecond(input)
+	got := day2.HandleSecond(input)
 
 	// Assert
 	if got != want {
