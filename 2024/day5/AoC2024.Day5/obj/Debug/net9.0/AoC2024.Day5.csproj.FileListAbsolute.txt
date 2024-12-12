@@ -1,0 +1,14 @@
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/bin/Debug/net9.0/AoC2024.Day5
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/bin/Debug/net9.0/AoC2024.Day5.deps.json
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/bin/Debug/net9.0/AoC2024.Day5.runtimeconfig.json
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/bin/Debug/net9.0/AoC2024.Day5.dll
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/bin/Debug/net9.0/AoC2024.Day5.pdb
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/obj/Debug/net9.0/AoC2024.Day5.GeneratedMSBuildEditorConfig.editorconfig
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/obj/Debug/net9.0/AoC2024.Day5.AssemblyInfoInputs.cache
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/obj/Debug/net9.0/AoC2024.Day5.AssemblyInfo.cs
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/obj/Debug/net9.0/AoC2024.Day5.csproj.CoreCompileInputs.cache
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/obj/Debug/net9.0/AoC2024.Day5.dll
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/obj/Debug/net9.0/refint/AoC2024.Day5.dll
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/obj/Debug/net9.0/AoC2024.Day5.pdb
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/obj/Debug/net9.0/AoC2024.Day5.genruntimeconfig.cache
+/Users/robin.de.gier/Documents/projects/personal/AoC/2024/day5/AoC2024.Day5/obj/Debug/net9.0/ref/AoC2024.Day5.dll
