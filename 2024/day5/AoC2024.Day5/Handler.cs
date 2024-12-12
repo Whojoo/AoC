@@ -37,15 +37,10 @@ public static class Handler
             {
                 if (rules.GetSetForKey(x).Contains(y))
                 {
-                    return 1;
-                }
-
-                if (rules.GetSetForKey(y).Contains(x))
-                {
                     return -1;
                 }
 
-                return 0;
+                return rules.GetSetForKey(y).Contains(x) ? 1 : 0;
             }))
             .ToList();
 
@@ -102,26 +97,5 @@ public static class Handler
         dictionary.Add(key, value);
 
         return value;
-    }
-
-    private static List<int> MoveItem(this List<int> list, int oldIndex, int newIndex)
-    {
-        var newList = new List<int>(list.Count);
-        foreach (var (v, i) in list.Select((v, i) => (v, i)))
-        {
-            if (i == oldIndex)
-            {
-                break;
-            }
-
-            if (i == newIndex)
-            {
-                newList.Add(list[oldIndex]);
-            }
-
-            newList.Add(v);
-        }
-
-        return newList;
     }
 }
