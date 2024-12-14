@@ -34,18 +34,18 @@ func TestHandleFirst(t *testing.T) {
 func TestHandleSecond(t *testing.T) {
 	// Arrange
 	input := []string{
-		"MMMSXXMASM",
-		"MSAMXMSMSA",
-		"AMXSXMAAMM",
-		"MSAMASMSMX",
-		"XMASAMXAMM",
-		"XXAMMXXAMA",
-		"SMSMSASXSS",
-		"SAXAMASAAA",
-		"MAMMMXMMMM",
-		"MXMXAXMASX",
+		"....#.....",
+		".........#",
+		"..........",
+		"..#.......",
+		".......#..",
+		"..........",
+		".#..^.....",
+		"........#.",
+		"#.........",
+		"......#...",
 	}
-	want := 9
+	want := 6
 
 	// Act
 	got := day6.HandleSecond(input)
