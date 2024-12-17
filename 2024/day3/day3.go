@@ -5,6 +5,23 @@ import (
 	"strconv"
 )
 
+type Assignment struct{}
+
+func GetAssignment() Assignment {
+	return Assignment{}
+}
+
+func (Assignment) Handle(input []string, c chan<- int) {
+	first, second := HandleFirst(input), HandleSecond(input)
+	c <- first
+	c <- second
+	close(c)
+}
+
+func (Assignment) FileName() string {
+	return "day3.txt"
+}
+
 func HandleFirst(input []string) int {
 	// Create single string
 	mergedInput := reduce(input)

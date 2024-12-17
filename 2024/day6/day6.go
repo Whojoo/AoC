@@ -2,208 +2,40 @@ package day6
 
 import (
 	"fmt"
+	"slices"
 	"strings"
+
+	"github.com/Whojoo/AoC/2024/shared"
 )
 
-func HandleFirst(input []string) int {
-	grid := createGrid(input)
+type Assignment struct{}
 
-	x, y := grid.playerX, grid.playerY
-
-	for grid.MovePlayer() {
-	}
-
-	grid.field[y][x] = "X"
-
-	for _, row := range grid.field {
-		fmt.Println(row)
-	}
-
-	return grid.marked
+func GetAssignment() Assignment {
+	return Assignment{}
 }
 
-func HandleSecond(input []string) int {
+func (Assignment) Handle(input []string, c chan<- int) {
 	grid := createGrid(input)
+
 	x, y := grid.playerX, grid.playerY
+
 	for grid.MovePlayer() {
 	}
 
-	objects := createObjectsCollection(grid)
-	sum := 0
+	grid.field[y][x].Render = "X"
 
-	for _, object := range objects {
-		otherObjects := filter(objects, func(o Object) bool { return o.ID != object.ID })
-		sum += CalculateLoopingGuardOptions(object, otherObjects, grid)
-	}
+	c <- grid.CountMarkedTiles()
+	c <- grid.CountPotentialLoopObjects()
 
-	grid.field[y][x] = "X"
-	for _, row := range grid.field {
-		fmt.Println(row)
-	}
+	close(c)
+}
 
-	return sum
+func (Assignment) FileName() string {
+	return "day6.txt"
 }
 
 type Object struct {
 	X, Y, ID int
-}
-
-func CalculateLoopingGuardOptions(current Object, others []Object, grid Grid) int {
-	// 4 options
-	// top left:     right & down: (X++, Y+1) && (X-1, Y++) => v (r.X-1, d.Y+1)
-	// top right:    left & down:  (X--, Y-1) && (X-1, Y++) => < (l.X-1, d.Y-1)
-	// bottom right: left && up:   (X--, Y-1) && (X+1, Y--) => ^ (l.X+1, u.Y-1)
-	// bottom left:  right && up:  (X++, Y+1) && (X+1, Y--) => > (r.X+1, u.Y+1)
-	topLeft, tlObjs := calculateTopLeft(current, others, grid)
-	topRight, trObjs := calculateTopRight(current, others, grid)
-	bottomRight, brObjs := calculateBottomRight(current, others, grid)
-	bottomLeft, blObjs := calculateBottomLeft(current, others, grid)
-
-	objects := make([]Object, 0)
-	objects = append(objects, tlObjs...)
-	objects = append(objects, trObjs...)
-	objects = append(objects, brObjs...)
-	objects = append(objects, blObjs...)
-
-	for _, obj := range objects {
-		grid.field[obj.Y][obj.X] = "O"
-	}
-
-	return topLeft + topRight + bottomRight + bottomLeft
-}
-
-func calculateTopLeft(current Object, others []Object, grid Grid) (int, []Object) {
-	const lookDown string = "v"
-	sum := 0
-	potentialObjects := make([]Object, 0)
-
-	rightOthers := filter(others, func(o Object) bool { return o.X > current.X && o.Y == current.Y+1 })
-	downOthers := filter(others, func(o Object) bool { return o.X == current.X-1 && o.Y > current.Y })
-	for _, r := range rightOthers {
-		for _, d := range downOthers {
-			if d.Y+1 >= len(grid.field) {
-				continue
-			}
-
-			if r.X-1 < 0 {
-				continue
-			}
-
-			if grid.field[d.Y+1][r.X-1] == lookDown {
-				potentialObjects = append(potentialObjects, Object{X: r.X - 1, Y: d.Y + 1})
-				sum++
-			}
-		}
-	}
-
-	return sum, potentialObjects
-}
-
-func calculateTopRight(current Object, others []Object, grid Grid) (int, []Object) {
-	const lookLeft string = "<"
-	sum := 0
-	potentialObjects := make([]Object, 0)
-
-	leftOthers := filter(others, func(o Object) bool { return o.X < current.X && o.Y == current.Y-1 })
-	downOthers := filter(others, func(o Object) bool { return o.X == current.X-1 && o.Y > current.Y })
-	for _, l := range leftOthers {
-		for _, d := range downOthers {
-			if d.Y-1 < 0 {
-				continue
-			}
-
-			if l.X-1 < 0 {
-				continue
-			}
-
-			if grid.field[d.Y-1][l.X-1] == lookLeft {
-				potentialObjects = append(potentialObjects, Object{X: l.X - 1, Y: d.Y - 1})
-				sum++
-			}
-		}
-	}
-
-	return sum, potentialObjects
-}
-
-func calculateBottomRight(current Object, others []Object, grid Grid) (int, []Object) {
-	const lookUp string = "^"
-	sum := 0
-	potentialObjects := make([]Object, 0)
-
-	leftOthers := filter(others, func(o Object) bool { return o.X < current.X && o.Y == current.Y-1 })
-	upOthers := filter(others, func(o Object) bool { return o.X == current.X+1 && o.Y < current.Y })
-	for _, l := range leftOthers {
-		for _, u := range upOthers {
-			if u.Y-1 < 0 {
-				continue
-			}
-
-			if l.X+1 >= len(grid.field[0]) {
-				continue
-			}
-
-			if grid.field[u.Y-1][l.X+1] == lookUp {
-				potentialObjects = append(potentialObjects, Object{X: l.X + 1, Y: u.Y - 1})
-				sum++
-			}
-		}
-	}
-
-	return sum, potentialObjects
-}
-
-func calculateBottomLeft(current Object, others []Object, grid Grid) (int, []Object) {
-	const lookRight string = ">"
-	sum := 0
-	potentialObjects := make([]Object, 0)
-
-	rightOthers := filter(others, func(o Object) bool { return o.X > current.X && o.Y == current.Y+1 })
-	upOthers := filter(others, func(o Object) bool { return o.X == current.X+1 && o.Y < current.Y })
-	for _, r := range rightOthers {
-		for _, u := range upOthers {
-			if u.Y+1 >= len(grid.field) {
-				continue
-			}
-
-			if r.X+1 >= len(grid.field[0]) {
-				continue
-			}
-
-			if grid.field[u.Y+1][r.X+1] == lookRight {
-				potentialObjects = append(potentialObjects, Object{X: r.X + 1, Y: u.Y + 1})
-				sum++
-			}
-		}
-	}
-
-	return sum, potentialObjects
-}
-
-func filter(objs []Object, f func(Object) bool) []Object {
-	var result []Object
-	for _, obj := range objs {
-		if f(obj) {
-			result = append(result, obj)
-		}
-	}
-
-	return result
-}
-
-func createObjectsCollection(grid Grid) []Object {
-	objects := make([]Object, 0)
-	i := 0
-	for y, row := range grid.field {
-		for x, char := range row {
-			if char == objectMarker {
-				objects = append(objects, Object{X: x, Y: y, ID: i})
-				i++
-			}
-		}
-	}
-
-	return objects
 }
 
 const (
@@ -212,28 +44,49 @@ const (
 )
 
 func createGrid(input []string) Grid {
-	field := make([][]string, len(input))
+	tilesField := make([][]Tile, len(input))
 	playerX, playerY := 0, 0
 
 	for y, line := range input {
-		field[y] = strings.Split(line, "")
+		fields := strings.Split(line, "")
+		tilesField[y] = make([]Tile, len(fields))
 
-		for x, char := range field[y] {
-			if char == playerMarker {
+		for x, field := range fields {
+			tilesField[y][x] = Tile{
+				State:            getTileState(field),
+				Render:           field,
+				X:                x,
+				Y:                y,
+				WalkedDirections: []Direction{},
+			}
+
+			if tilesField[y][x].State == walked {
 				playerX = x
 				playerY = y
+				tilesField[y][x].WalkedDirections = append(tilesField[y][x].WalkedDirections, up)
 			}
 		}
 	}
 
 	grid := Grid{
-		field:     field,
+		field:     tilesField,
 		playerX:   playerX,
 		playerY:   playerY,
 		direction: up,
 	}
 
 	return grid
+}
+
+func getTileState(s string) Marker {
+	switch s {
+	case playerMarker:
+		return walked
+	case objectMarker:
+		return obstruction
+	default:
+		return empty
+	}
 }
 
 type Direction struct {
@@ -262,12 +115,40 @@ func (d Direction) Turn() Direction {
 	}
 }
 
+type Marker int
+
+const (
+	empty Marker = iota
+	walked
+	obstruction
+)
+
+type Tile struct {
+	State                 Marker
+	Render                string
+	X, Y                  int
+	WalkedDirections      []Direction
+	CanBeUsedAsLoopObject bool
+}
+
+func (t *Tile) Copy() Tile {
+	newTile := Tile{
+		State:                 t.State,
+		Render:                t.Render,
+		X:                     t.X,
+		Y:                     t.Y,
+		CanBeUsedAsLoopObject: t.CanBeUsedAsLoopObject,
+	}
+	newTile.WalkedDirections = append(newTile.WalkedDirections, t.WalkedDirections...)
+
+	return newTile
+}
+
 type Grid struct {
-	field     [][]string
+	field     [][]Tile
 	playerX   int
 	playerY   int
 	direction Direction
-	marked    int
 }
 
 func (g *Grid) SetupPlayerRotation() {
@@ -275,11 +156,11 @@ func (g *Grid) SetupPlayerRotation() {
 		newY := g.playerY + g.direction.Y
 		newX := g.playerX + g.direction.X
 
-		if newX < 0 || newY < 0 || newX >= len(g.field[0]) || newY >= len(g.field) {
+		if !g.IsInsideGrid(newX, newY) {
 			break
 		}
 
-		if g.field[newY][newX] == objectMarker {
+		if g.field[newY][newX].State == obstruction {
 			g.direction = g.direction.Turn()
 			continue
 		}
@@ -293,19 +174,115 @@ func (g *Grid) MovePlayer() bool {
 	g.playerX += g.direction.X
 	g.playerY += g.direction.Y
 
-	if g.playerX < 0 || g.playerY < 0 || g.playerX >= len(g.field[0]) || g.playerY >= len(g.field) {
-		g.marked++
+	if !g.IsInsideGrid(g.playerX, g.playerY) {
 		return false
 	}
 
-	if !isWalkedMarker(g.field[g.playerY][g.playerX]) {
-		g.marked++
-	}
+	tile := &g.field[g.playerY][g.playerX]
+	tile.State = walked
+	tile.WalkedDirections = append(tile.WalkedDirections, g.direction)
+	tile.Render = renderWalkedMarker(g.direction)
 
-	// Overwrite rendering so the last usage is always shown (needed for part 2)
-	g.field[g.playerY][g.playerX] = renderWalkedMarker(g.direction)
+	gridCopy := g.Copy()
+	checkForLoop(gridCopy, tile)
 
 	return true
+}
+
+func (g *Grid) Copy() Grid {
+	newGrid := Grid{
+		field:     make([][]Tile, len(g.field)),
+		playerX:   g.playerX,
+		playerY:   g.playerY,
+		direction: g.direction,
+	}
+
+	for y, row := range g.field {
+		newGrid.field[y] = make([]Tile, len(row))
+		for x, tile := range row {
+			newGrid.field[y][x] = tile.Copy()
+		}
+	}
+
+	return newGrid
+}
+
+func (g *Grid) IsInsideGrid(x, y int) bool {
+	return x >= 0 && y >= 0 && x < len(g.field[0]) && y < len(g.field)
+}
+
+func checkForLoop(g Grid, guardTile *Tile) {
+	oX, oY := guardTile.X+g.direction.X, guardTile.Y+g.direction.Y
+
+	// Early out if next step is outside the map
+	if !g.IsInsideGrid(oX, oY) {
+		return
+	}
+
+	newObjectTile := &g.field[oY][oX]
+	if newObjectTile.State == obstruction {
+		return
+	}
+	if len(newObjectTile.WalkedDirections) > 0 {
+		// Early out if the object is placed on a path we visited before, otherwise we wouldn't have got here
+		return
+	}
+
+	newObjectTile.State = obstruction
+	newObjectTile.Render = "O"
+
+	for {
+		// Walk the guard
+		g.SetupPlayerRotation()
+		g.playerX += g.direction.X
+		g.playerY += g.direction.Y
+
+		if !g.IsInsideGrid(g.playerX, g.playerY) {
+			return
+		}
+
+		tile := &g.field[g.playerY][g.playerX]
+
+		if tile.State == walked && slices.Contains(tile.WalkedDirections, g.direction) {
+			guardTile.CanBeUsedAsLoopObject = true
+			// g.Print()
+			return
+		}
+
+		tile.State = walked
+		tile.WalkedDirections = append(tile.WalkedDirections, g.direction)
+		tile.Render = renderWalkedMarker(g.direction)
+	}
+}
+
+func (g *Grid) CountMarkedTiles() int {
+	sum := 0
+
+	for _, row := range g.field {
+		walkedTiles := shared.Filter(row, func(t Tile) bool { return t.State == walked })
+		sum += len(walkedTiles)
+	}
+
+	return sum
+}
+
+func (g *Grid) CountPotentialLoopObjects() int {
+	sum := 0
+
+	for _, row := range g.field {
+		potentialLoopObjects := shared.Filter(row, func(t Tile) bool { return t.CanBeUsedAsLoopObject })
+		sum += len(potentialLoopObjects)
+	}
+
+	return sum
+}
+
+func (g *Grid) Print() {
+	for _, field := range g.field {
+		fieldRenders := shared.Project(field, func(t Tile) string { return t.Render })
+		fmt.Println(strings.Join(fieldRenders, " "))
+	}
+	fmt.Println()
 }
 
 func renderWalkedMarker(d Direction) string {
@@ -321,9 +298,4 @@ func renderWalkedMarker(d Direction) string {
 	default:
 		panic(fmt.Sprintf("Direction is screwd, started with %v", d))
 	}
-}
-
-func isWalkedMarker(marker string) bool {
-	const walkedMarkers string = "^>v<"
-	return strings.Contains(walkedMarkers, marker)
 }

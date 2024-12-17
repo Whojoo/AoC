@@ -5,6 +5,23 @@ import (
 	"strings"
 )
 
+type Assignment struct{}
+
+func GetAssignment() Assignment {
+	return Assignment{}
+}
+
+func (Assignment) Handle(input []string, c chan<- int) {
+	first, second := HandleFirst(input), HandleSecond(input)
+	c <- first
+	c <- second
+	close(c)
+}
+
+func (Assignment) FileName() string {
+	return "day4.txt"
+}
+
 func HandleFirst(input []string) int {
 	// grid[y][x]
 	grid := toGrid(input)
