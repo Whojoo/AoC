@@ -36,60 +36,79 @@ func TestHandleFirst(t *testing.T) {
 }
 
 func TestHandleSecond_WhenGivenExampleInput_ShouldReturnCorrectResult(t *testing.T) {
-	// Arrange
-	input := []string{
-		"....#.....",
-		".........#",
-		"..........",
-		"..#.......",
-		".......#..",
-		"..........",
-		".#..^.....",
-		"........#.",
-		"#.........",
-		"......#...",
+	tests := []struct {
+		name  string
+		input []string
+		want  int
+	}{
+		{
+			name: "example 1",
+			input: []string{
+				"##..",
+				"...#",
+				"....",
+				"^.#.",
+			},
+			want: 0,
+		},
+		{
+			name: "example 2",
+			input: []string{
+				"..........",
+				"..........",
+				"..#.......",
+				"........#.",
+				"........#.",
+				"..........",
+				"....^.....",
+				"..........",
+				".#........",
+				".......#..",
+			},
+			want: 1,
+		},
+		{
+			name: "example 3",
+			input: []string{
+				"....#.....",
+				".........#",
+				"..........",
+				"..#.......",
+				".......#..",
+				"..........",
+				".#..^.....",
+				"........#.",
+				"#.........",
+				"......#...",
+			},
+			want: 6,
+		},
+		{
+			name: "example 4",
+			input: []string{
+				".#...",
+				"....#",
+				".....",
+				".^.#.",
+				"#....",
+				"..#..",
+			},
+			want: 3,
+		},
 	}
 
-	want := 6
+	for _, test := range tests {
+		testName := test.name
+		t.Run(testName, func(t *testing.T) {
+			c := make(chan int)
+			go day6.GetAssignment().Handle(test.input, c)
+			<-c
+			got := <-c
 
-	// Act
-	c := make(chan int)
-	go day6.GetAssignment().Handle(input, c)
-	<-c
-	got := <-c
-
-	// Assert
-	if got != want {
-		t.Errorf("got %d, want %d", got, want)
-	}
-}
-
-func TestHandleSecond_WhenGivenRedditExampleInput_ShouldReturnCorrectResult(t *testing.T) {
-	// Arrange
-	input := []string{
-		"..........",
-		"..........",
-		"..#.......",
-		"........#.",
-		"........#.",
-		"..........",
-		"....^.....",
-		"..........",
-		".#........",
-		".......#..",
-	}
-
-	want := 1
-
-	// Act
-	c := make(chan int)
-	go day6.GetAssignment().Handle(input, c)
-	<-c
-	got := <-c
-
-	// Assert
-	if got != want {
-		t.Errorf("got %d, want %d", got, want)
+			if got != test.want {
+				t.Errorf("got %d, want %d", got, test.want)
+			}
+		})
 	}
 }
 

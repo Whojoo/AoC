@@ -170,6 +170,9 @@ func (g *Grid) SetupPlayerRotation() {
 }
 
 func (g *Grid) MovePlayer() bool {
+	gridCopy := g.Copy()
+	checkForLoop(gridCopy, &g.field[g.playerY][g.playerX])
+
 	g.SetupPlayerRotation()
 	g.playerX += g.direction.X
 	g.playerY += g.direction.Y
@@ -182,9 +185,6 @@ func (g *Grid) MovePlayer() bool {
 	tile.State = walked
 	tile.WalkedDirections = append(tile.WalkedDirections, g.direction)
 	tile.Render = renderWalkedMarker(g.direction)
-
-	gridCopy := g.Copy()
-	checkForLoop(gridCopy, tile)
 
 	return true
 }
@@ -245,7 +245,6 @@ func checkForLoop(g Grid, guardTile *Tile) {
 
 		if tile.State == walked && slices.Contains(tile.WalkedDirections, g.direction) {
 			guardTile.CanBeUsedAsLoopObject = true
-			// g.Print()
 			return
 		}
 
