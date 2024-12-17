@@ -35,6 +35,9 @@ func TestHandleFirst(t *testing.T) {
 	}
 }
 
+// Ignore function length linting for table driven test
+//
+//nolint:funlen
 func TestHandleSecond_WhenGivenExampleInput_ShouldReturnCorrectResult(t *testing.T) {
 	tests := []struct {
 		name  string
