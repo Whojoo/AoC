@@ -41,6 +41,9 @@ nupkg/
 # Visual Studio
 .vs/
 
+# Jetbrains
+.idea/
+
 # Code Rush
 .cr/
 
