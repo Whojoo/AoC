@@ -118,6 +118,15 @@ func TestHandleSecond_WhenGivenExampleInput_ShouldReturnCorrectResult(t *testing
 			},
 			want: 0,
 		},
+		{
+			name: "example 7",
+			input: []string{
+				"###.",
+				"#.^.",
+				"..#.",
+			},
+			want: 1,
+		},
 	}
 
 	for _, test := range tests {

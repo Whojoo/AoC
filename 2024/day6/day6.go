@@ -211,20 +211,18 @@ func (g *Grid) IsInsideGrid(x, y int) bool {
 	return x >= 0 && y >= 0 && x < len(g.field[0]) && y < len(g.field)
 }
 
+func (g *Grid) GetTile(x, y int) (*Tile, bool) {
+	if !g.IsInsideGrid(x, y) {
+		return nil, false
+	}
+
+	return &g.field[y][x], true
+}
+
 func checkForLoop(g Grid, guardTile *Tile) {
-	oX, oY := guardTile.X+g.direction.X, guardTile.Y+g.direction.Y
+	newObjectTile, ok := findNewObjectTilePlacement(&g, guardTile)
 
-	// Early out if next step is outside the map
-	if !g.IsInsideGrid(oX, oY) {
-		return
-	}
-
-	newObjectTile := &g.field[oY][oX]
-	if newObjectTile.State == obstruction {
-		return
-	}
-	if len(newObjectTile.WalkedDirections) > 0 {
-		// Early out if the object is placed on a path we visited before, otherwise we wouldn't have got here
+	if !ok {
 		return
 	}
 
@@ -252,6 +250,28 @@ func checkForLoop(g Grid, guardTile *Tile) {
 		tile.WalkedDirections = append(tile.WalkedDirections, g.direction)
 		tile.Render = renderWalkedMarker(g.direction)
 	}
+}
+
+func findNewObjectTilePlacement(g *Grid, guardTile *Tile) (*Tile, bool) {
+	d := g.direction
+	for i := 0; i < 4; i++ {
+		oX, oY := guardTile.X+d.X, guardTile.Y+d.Y
+		newObjectTile, ok := g.GetTile(oX, oY)
+
+		// No obstruction to turn and invalid tile for object placement
+		if !ok || newObjectTile.State == walked {
+			return nil, false
+		}
+
+		if newObjectTile.State == obstruction {
+			d = d.Turn()
+			continue
+		}
+
+		return newObjectTile, true
+	}
+
+	return nil, false
 }
 
 func (g *Grid) CountMarkedTiles() int {
