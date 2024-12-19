@@ -23,10 +23,10 @@ func main() {
 		day4.GetAssignment(),
 		day6.GetAssignment2(),
 	}
-	responseChannels := make([]chan int, len(assignments))
+	responseChannels := make([]chan string, len(assignments))
 
 	for i, assignment := range slices.Backward(assignments) {
-		responseChannels[i] = make(chan int)
+		responseChannels[i] = make(chan string)
 
 		go func() {
 			input := getInput(assignment.FileName())
@@ -34,20 +34,9 @@ func main() {
 		}()
 	}
 
-	for i, responseChannel := range slices.Backward(responseChannels) {
-		day := i + 1
-
-		if day >= 5 {
-			day++
-		}
-
-		fmt.Printf("Day %d\n", day)
-		for i := 1; true; i++ {
-			v, ok := <-responseChannel
-			if !ok {
-				break
-			}
-			fmt.Printf("Result %d: %v\n", i, v)
+	for _, responseChannel := range slices.Backward(responseChannels) {
+		for response := range responseChannel {
+			fmt.Println(response)
 		}
 		fmt.Println()
 	}

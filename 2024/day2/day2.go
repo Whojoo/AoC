@@ -1,11 +1,13 @@
 package day2
 
 import (
+	"fmt"
 	"math"
 	"slices"
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 type Assignment struct{}
@@ -14,10 +16,19 @@ func GetAssignment() Assignment {
 	return Assignment{}
 }
 
-func (Assignment) Handle(input []string, c chan<- int) {
-	first, second := HandleFirst(input), HandleSecond(input)
-	c <- first
-	c <- second
+func (Assignment) Handle(input []string, c chan<- string) {
+	startTime := time.Now()
+	first := HandleFirst(input)
+	firstTime := time.Since(startTime)
+
+	startTime = time.Now()
+	second := HandleSecond(input)
+	secondTime := time.Since(startTime)
+
+	c <- "Day 2"
+	c <- fmt.Sprintf("First result: %d in %s", first, firstTime)
+	c <- fmt.Sprintf("Second result: %d in %s", second, secondTime)
+
 	close(c)
 }
 

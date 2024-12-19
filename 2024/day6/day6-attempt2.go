@@ -1,8 +1,10 @@
 package day6
 
 import (
+	"fmt"
 	"slices"
 	"sync"
+	"time"
 
 	"github.com/Whojoo/AoC/2024/shared"
 )
@@ -13,7 +15,8 @@ func GetAssignment2() AssignmentAttempt2 {
 	return AssignmentAttempt2{}
 }
 
-func (AssignmentAttempt2) Handle(input []string, c chan<- int) {
+func (AssignmentAttempt2) Handle(input []string, c chan<- string) {
+	startTime := time.Now()
 	grid := createGrid(input)
 	// Need a copy for the looping later
 	gridCopy := grid.Copy()
@@ -22,6 +25,11 @@ func (AssignmentAttempt2) Handle(input []string, c chan<- int) {
 
 	for grid.RunGuardRoute() {
 	}
+
+	first := grid.CountMarkedTiles()
+	firstTime := time.Since(startTime)
+
+	startTime = time.Now()
 
 	tilesToCheck := shared.Filter(grid.GetWalkedTiles(), func(t Tile) bool { return !(t.X == x && t.Y == y) })
 	guardLoopsIncrementer := GuardLoopsIncrementer{}
@@ -42,8 +50,12 @@ func (AssignmentAttempt2) Handle(input []string, c chan<- int) {
 
 	wg.Wait()
 
-	c <- grid.CountMarkedTiles()
-	c <- guardLoopsIncrementer.Get()
+	second := guardLoopsIncrementer.Get()
+	secondTime := time.Since(startTime)
+
+	c <- "Day 6"
+	c <- fmt.Sprintf("First result: %d in %s", first, firstTime)
+	c <- fmt.Sprintf("Second result: %d in %s", second, secondTime)
 
 	close(c)
 }
