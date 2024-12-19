@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
 
 	"github.com/Whojoo/AoC/2024/day1"
 	"github.com/Whojoo/AoC/2024/day2"
@@ -24,7 +25,7 @@ func main() {
 	}
 	responseChannels := make([]chan int, len(assignments))
 
-	for i, assignment := range assignments {
+	for i, assignment := range slices.Backward(assignments) {
 		responseChannels[i] = make(chan int)
 
 		go func() {
@@ -33,7 +34,7 @@ func main() {
 		}()
 	}
 
-	for i, responseChannel := range responseChannels {
+	for i, responseChannel := range slices.Backward(responseChannels) {
 		day := i + 1
 
 		if day >= 5 {
