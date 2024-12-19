@@ -20,7 +20,7 @@ func main() {
 		day2.GetAssignment(),
 		day3.GetAssignment(),
 		day4.GetAssignment(),
-		day6.GetAssignment(),
+		day6.GetAssignment2(),
 	}
 	responseChannels := make([]chan int, len(assignments))
 
