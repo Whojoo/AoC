@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+using Xunit;
 
-namespace AoC2024.Day5.Test;
+namespace Dotnet.Test;
 
-public class UnitTest1
+public class Day5Tests
 {
     [Fact]
     public void CalculatePart1_WhenExampleInput_ShouldGiveExampleResult()
@@ -39,8 +39,8 @@ public class UnitTest1
             "61,13,29",
             "97,13,75,29,47"
         ];
-
-        var result = Handler.CalculatePart1(input);
+        
+        var result = Day5.CalculatePart1(input);
 
         result.Should().Be(143);
     }
@@ -80,7 +80,7 @@ public class UnitTest1
             "97,13,75,29,47"
         ];
 
-        var result = Handler.CalculatePart2(input);
+        var result = Day5.CalculatePart2(input);
 
         result.Should().Be(123);
     }

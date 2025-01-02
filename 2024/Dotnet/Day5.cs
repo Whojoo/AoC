@@ -1,9 +1,27 @@
-using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
-namespace AoC2024.Day5;
+namespace Dotnet;
 
-public static class Handler
+public static class Day5
 {
+    public static void Run()
+    {
+        var input = InputReader.ReadInput("day5.txt");
+        
+        var startTime = Stopwatch.GetTimestamp();
+        var part1 = CalculatePart1(input);
+        var part1Time = Stopwatch.GetElapsedTime(startTime);
+        
+        startTime = Stopwatch.GetTimestamp();
+        var part2 = CalculatePart2(input);
+        var part2Time = Stopwatch.GetElapsedTime(startTime);
+        
+        Console.WriteLine("Day 5");
+        Console.WriteLine($"Part 1: {part1} in {part1Time.TotalMilliseconds} ms");
+        Console.WriteLine($"Part 2: {part2} in {part2Time.TotalMilliseconds} ms");
+        Console.WriteLine();
+    }
+    
     public static int CalculatePart1(List<string> input)
     {
         var (rawRules, rawUpdates) = SplitInput(input);

@@ -6,8 +6,6 @@ import (
 	"os"
 	"slices"
 
-	"github.com/Whojoo/AoC/2024/day7"
-
 	"github.com/Whojoo/AoC/2024/day1"
 	"github.com/Whojoo/AoC/2024/day2"
 	"github.com/Whojoo/AoC/2024/day3"
@@ -24,7 +22,6 @@ func main() {
 		day3.GetAssignment(),
 		day4.GetAssignment(),
 		day6.GetAssignment2(),
-		day7.GetAssignment(),
 	}
 	responseChannels := make([]chan string, len(assignments))
 

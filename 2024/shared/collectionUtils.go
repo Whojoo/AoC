@@ -18,3 +18,12 @@ func Filter[K any](objs []K, f func(K) bool) []K {
 
 	return result
 }
+
+func Any[K any](objs []K, f func(K) bool) bool {
+	for _, obj := range objs {
+		if f(obj) {
+			return true
+		}
+	}
+	return false
+}
