@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/Whojoo/AoC/2024/day8"
 	"os"
-	"slices"
 
 	"github.com/Whojoo/AoC/2024/day1"
 	"github.com/Whojoo/AoC/2024/day2"
@@ -22,10 +22,11 @@ func main() {
 		day3.GetAssignment(),
 		day4.GetAssignment(),
 		day6.GetAssignment2(),
+		day8.GetAssignment(),
 	}
 	responseChannels := make([]chan string, len(assignments))
 
-	for i, assignment := range slices.Backward(assignments) {
+	for i, assignment := range assignments {
 		responseChannels[i] = make(chan string)
 
 		go func() {
@@ -34,7 +35,7 @@ func main() {
 		}()
 	}
 
-	for _, responseChannel := range slices.Backward(responseChannels) {
+	for _, responseChannel := range responseChannels {
 		for response := range responseChannel {
 			fmt.Println(response)
 		}
