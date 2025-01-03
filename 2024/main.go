@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/Whojoo/AoC/2024/day8"
+	"github.com/Whojoo/AoC/2024/day9"
 	"os"
 
 	"github.com/Whojoo/AoC/2024/day1"
@@ -23,6 +24,7 @@ func main() {
 		day4.GetAssignment(),
 		day6.GetAssignment2(),
 		day8.GetAssignment(),
+		day9.GetAssignment(),
 	}
 	responseChannels := make([]chan string, len(assignments))
 

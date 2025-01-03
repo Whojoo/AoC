@@ -19,6 +19,16 @@ func Filter[K any](objs []K, f func(K) bool) []K {
 	return result
 }
 
+func First[K any](objs *[]K, f func(K) bool) (*K, bool) {
+	for i := 0; i < len(*objs); i++ {
+		if f((*objs)[i]) {
+			return &(*objs)[i], true
+		}
+	}
+
+	return nil, false
+}
+
 func Any[K any](objs []K, f func(K) bool) bool {
 	for _, obj := range objs {
 		if f(obj) {
