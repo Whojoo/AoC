@@ -15,8 +15,7 @@ func (Assignment) Handle(input []string, c chan<- string) {
 
 	startTime := time.Now()
 
-	worldHeight := len(input)
-	worldWidth := len(input[0])
+	worldHeight, worldWidth := len(input), len(input[0])
 	antennas := getAntennas(input)
 
 	groupedAntennas := make(map[string][]Antenna)
@@ -29,8 +28,7 @@ func (Assignment) Handle(input []string, c chan<- string) {
 		groupedAntennas[a.frequency] = append(groupedAntennas[a.frequency], a)
 	}
 
-	antiNodeSet := NewAntiNodeSet()
-	resonantHarmonicsAntiNodeSet := NewAntiNodeSet()
+	antiNodeSet, resonantHarmonicsAntiNodeSet := NewAntiNodeSet(), NewAntiNodeSet()
 
 	for _, antennaGroup := range groupedAntennas {
 		for i, currentAntenna := range antennaGroup {
