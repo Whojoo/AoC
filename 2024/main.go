@@ -59,6 +59,8 @@ func getInput(fileName string) []string {
 	}(file)
 
 	scanner := bufio.NewScanner(file)
+	buf := make([]byte, 0, 64*1024)
+	scanner.Buffer(buf, 1024*1024)
 	input := make([]string, 0)
 	for scanner.Scan() {
 		input = append(input, scanner.Text())

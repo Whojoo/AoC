@@ -1,6 +1,7 @@
 package day9
 
 import (
+	"container/heap"
 	"fmt"
 	"github.com/Whojoo/AoC/2024/shared"
 	"strconv"
@@ -11,6 +12,8 @@ import (
 type Assignment struct{}
 
 func GetAssignment() Assignment { return Assignment{} }
+
+func (Assignment) FileName() string { return "day9_evil.txt" }
 
 func (Assignment) Handle(input []string, c chan<- string) {
 	defer close(c)
@@ -57,30 +60,28 @@ func CalculateChecksum(layout []int) uint64 {
 
 func ShiftToStructuredLayout(layout []int) []int {
 	// Find empty pockets and record them
-	emptyPockets := GatherEmptyPockets(layout)
+	emptySpaces := GatherEmptySpaces(layout)
 
 	// Find last file from some index starting at the end
 	fileStartIndex, fileEndIndex, foundFile := FindNextFileToMove(layout, len(layout)-1)
 	for foundFile {
 		capacity := fileEndIndex - fileStartIndex + 1
+		emptySpaceLength, ok := FindFittingEmptySpaceLength(capacity, fileStartIndex, emptySpaces)
 
-		// Find most left fitting empty pocket
-		emptyPocket, ok := shared.First(&emptyPockets, func(e EmptyPocket) bool {
-			return e.adjustedStartIndex < fileStartIndex && e.capacity >= capacity
-		})
+		if ok {
+			emptySpaceStartingIndex := heap.Pop(emptySpaces[emptySpaceLength]).(int)
 
-		foo := &emptyPockets[0]
-
-		if ok && foo != nil {
-			// Swap and update empty pocket data
 			for i := range capacity {
 				fileIndex := fileStartIndex + i
-				emptySpaceIndex := emptyPocket.adjustedStartIndex + i
+				emptySpaceIndex := emptySpaceStartingIndex + i
 				layout[fileIndex], layout[emptySpaceIndex] = layout[emptySpaceIndex], layout[fileIndex]
 			}
 
-			emptyPocket.capacity -= capacity
-			emptyPocket.adjustedStartIndex += capacity
+			if capacity < emptySpaceLength {
+				emptySpaceStartingIndex += capacity
+				emptySpaceLength -= capacity
+				heap.Push(emptySpaces[emptySpaceLength], emptySpaceStartingIndex)
+			}
 		}
 
 		// Repeat
@@ -88,6 +89,36 @@ func ShiftToStructuredLayout(layout []int) []int {
 	}
 
 	return layout
+}
+
+const notFoundIndex int = 1000000000
+
+func FindFittingEmptySpaceLength(minLength, maxIndex int, emptySpaces []*MinHeap) (index int, ok bool) {
+	if minLength > len(emptySpaces) {
+		return 0, false
+	}
+
+	bestLength := minLength
+	currentIndex := notFoundIndex
+
+	for i := minLength; i < len(emptySpaces); i++ {
+		if emptySpaces[i].Len() == 0 {
+			continue
+		}
+
+		index := emptySpaces[i].Peek()
+
+		if index < currentIndex && index <= maxIndex {
+			bestLength = i
+			currentIndex = index
+		}
+	}
+
+	if currentIndex == notFoundIndex {
+		return 0, false
+	}
+
+	return bestLength, true
 }
 
 func FindNextFileToMove(layout []int, currentIndex int) (startIndex, endIndex int, ok bool) {
@@ -117,31 +148,42 @@ type EmptyPocket struct {
 	startIndex, endIndex, adjustedStartIndex, capacity int
 }
 
-func NewEmptyPocket(startIndex int, endIndex int, capacity int) EmptyPocket {
-	return EmptyPocket{startIndex: startIndex, adjustedStartIndex: startIndex, endIndex: endIndex, capacity: capacity}
-}
-
-func GatherEmptyPockets(layout []int) []EmptyPocket {
-	emptyPockets := make([]EmptyPocket, 0)
+func GatherEmptySpaces(layout []int) []*MinHeap {
+	var emptySpaces []struct{ startIndex, length int }
+	maxLength := 0
 
 	for i := 0; i < len(layout); i++ {
 		if layout[i] == freeSpace {
+			startIndex := i
+			length := 1
 			j := i + 1
 			for ; j < len(layout); j++ {
-				if layout[j] != freeSpace {
-					// Subtract 1 to make sure J is always equal to the last index including
+				if layout[j] == freeSpace {
+					length++
+				} else {
 					j--
 					break
 				}
 			}
 
-			emptyPocket := NewEmptyPocket(i, j, j-i+1)
-			emptyPockets = append(emptyPockets, emptyPocket)
 			i = j
+			maxLength = max(maxLength, length)
+			emptySpaces = append(emptySpaces, struct{ startIndex, length int }{startIndex, length})
 		}
 	}
 
-	return emptyPockets
+	heaps := make([]*MinHeap, maxLength+1)
+	for i := range heaps {
+		h := &MinHeap{}
+		heaps[i] = h
+		heap.Init(h)
+	}
+
+	for _, emptySpace := range emptySpaces {
+		heap.Push(heaps[emptySpace.length], emptySpace.startIndex)
+	}
+
+	return heaps
 }
 
 func ShiftToFragmentedLayout(layout []int) []int {
@@ -169,8 +211,6 @@ func ShiftToFragmentedLayout(layout []int) []int {
 
 	return layout
 }
-
-func (Assignment) FileName() string { return "day9.txt" }
 
 func GenerateDiskMap(input []string) []int {
 	characters := strings.Split(input[0], "")
@@ -203,4 +243,24 @@ func GenerateDiskLayout(diskMap []int) []int {
 	}
 
 	return layout
+}
+
+type MinHeap []int
+
+func (h MinHeap) Len() int           { return len(h) }
+func (h MinHeap) Less(i, j int) bool { return h[i] < h[j] }
+func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *MinHeap) Push(x interface{}) {
+	*h = append(*h, x.(int))
+}
+func (h *MinHeap) Pop() interface{} {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
+func (h MinHeap) Peek() int {
+	return h[0]
 }
