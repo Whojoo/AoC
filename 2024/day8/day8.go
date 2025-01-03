@@ -33,20 +33,10 @@ func (Assignment) Handle(input []string, c chan<- string) {
 	resonantHarmonicsAntiNodeSet := NewAntiNodeSet()
 
 	for _, antennaGroup := range groupedAntennas {
-		compareAntennaIndex := 0
-		for {
-			currentAntenna := antennaGroup[compareAntennaIndex]
-			remainingAntennas := antennaGroup[compareAntennaIndex+1:]
-
+		for i, currentAntenna := range antennaGroup {
 			resonantHarmonicsAntiNodeSet.Add(currentAntenna.position)
 
-			if len(remainingAntennas) == 0 {
-				break
-			}
-
-			for _, antenna := range remainingAntennas {
-				resonantHarmonicsAntiNodeSet.Add(antenna.position)
-
+			for _, antenna := range antennaGroup[i+1:] {
 				// Vector math b - a means going from a -> b, so we're pointing to current
 				diffVec := currentAntenna.position.Sub(antenna.position)
 
@@ -75,8 +65,6 @@ func (Assignment) Handle(input []string, c chan<- string) {
 					resonantHarmonicsAntiNodePos = resonantHarmonicsAntiNodePos.Sub(diffVec)
 				}
 			}
-
-			compareAntennaIndex++
 		}
 	}
 
