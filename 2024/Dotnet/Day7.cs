@@ -145,11 +145,10 @@ public static class Day7
     {
         public long Solve(long left, long right)
         {
-            // ReSharper disable once IdentifierTypo
-            var muliplier = 10;
-            while (muliplier <= right) muliplier *= 10;
+            var multiplier = 10;
+            while (multiplier <= right) multiplier *= 10;
             
-            return left * muliplier + right;
+            return left * multiplier + right;
         }
     }
 }
