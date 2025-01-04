@@ -3,7 +3,6 @@ package day10
 import (
 	"fmt"
 	"github.com/Whojoo/AoC/2024/shared"
-	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -83,7 +82,7 @@ func GenerateWorld(input []string) []*Node {
 	for y, line := range input {
 		nodes := shared.Project(strings.Split(line, ""), func(s string, x int) *Node {
 			height, _ := strconv.Atoi(s)
-			return NewNode(height, float64(x), float64(y))
+			return NewNode(height, x, y)
 		})
 
 		for i, n := range nodes {
@@ -107,17 +106,15 @@ func GenerateWorld(input []string) []*Node {
 
 type Node struct {
 	Neighbours []*Node
-	Position   Vector
 	Height     int
 	ID         int
 }
 
-func NewNode(height int, x, y float64) *Node {
+func NewNode(height, x, y int) *Node {
 	return &Node{
 		Neighbours: make([]*Node, 0),
-		Position:   NewVector(x, y),
 		Height:     height,
-		ID:         int(x)*1000 + int(y),
+		ID:         x*1000 + y,
 	}
 }
 
@@ -148,8 +145,3 @@ func (n *NodeStack) Pop() *Node {
 func (n *NodeStack) Push(node *Node) {
 	*n = append(*n, node)
 }
-
-type Vector struct{ X, Y float64 }
-
-func NewVector(x, y float64) Vector { return Vector{x, y} }
-func (v Vector) Magnitude() float64 { return math.Sqrt(v.X*v.X + v.Y*v.Y) }
