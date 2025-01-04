@@ -298,7 +298,7 @@ func (g *Grid) CountPotentialLoopObjects() int {
 
 func (g *Grid) Print() {
 	for _, field := range g.field {
-		fieldRenders := shared.Project(field, func(t Tile) string { return t.Render })
+		fieldRenders := shared.Project(field, func(t Tile, _ int) string { return t.Render })
 		fmt.Println(strings.Join(fieldRenders, " "))
 	}
 	fmt.Println()

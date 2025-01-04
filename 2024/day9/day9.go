@@ -214,7 +214,7 @@ func ShiftToFragmentedLayout(layout []int) []int {
 
 func GenerateDiskMap(input []string) []int {
 	characters := strings.Split(input[0], "")
-	return shared.Project(characters, func(c string) int {
+	return shared.Project(characters, func(c string, _ int) int {
 		i, _ := strconv.Atoi(c)
 		return i
 	})
