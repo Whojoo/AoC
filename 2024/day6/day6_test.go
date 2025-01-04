@@ -7,6 +7,8 @@ import (
 )
 
 func TestHandleFirst(t *testing.T) {
+	t.Parallel()
+
 	// Arrange
 	input := []string{
 		"....#.....",
@@ -39,6 +41,8 @@ func TestHandleFirst(t *testing.T) {
 //
 //nolint:funlen
 func TestHandleSecond_WhenGivenExampleInput_ShouldReturnCorrectResult(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name  string
 		input []string
@@ -159,6 +163,8 @@ func TestHandleSecond_WhenGivenExampleInput_ShouldReturnCorrectResult(t *testing
 }
 
 func TestHandleSecond_WhenRunMultipleTimes_ShouldGiveTheSameResult(t *testing.T) {
+	t.Parallel()
+
 	// Arrange
 	input := []string{
 		"....#.....",

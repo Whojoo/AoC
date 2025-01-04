@@ -7,6 +7,8 @@ import (
 )
 
 func TestHandleFirst(t *testing.T) {
+	t.Parallel()
+
 	// Arrange
 	input := []string{
 		"7 6 4 2 1",
@@ -28,6 +30,8 @@ func TestHandleFirst(t *testing.T) {
 }
 
 func TestHandleSecond(t *testing.T) {
+	t.Parallel()
+
 	// Arrange
 	input := []string{
 		"7 6 4 2 1",
