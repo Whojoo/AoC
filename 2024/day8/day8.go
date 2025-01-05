@@ -10,11 +10,33 @@ type Assignment struct{}
 
 func GetAssignment() Assignment { return Assignment{} }
 
-func (Assignment) Handle(input []string, c chan<- string) {
+func (a Assignment) Handle(input []string, c chan<- string) {
 	defer close(c)
 
 	startTime := time.Now()
 
+	part1, part2 := a.Part1(input), a.Part2(input)
+
+	elapsed := time.Since(startTime)
+
+	c <- "Day 8"
+	c <- fmt.Sprintf("%d", part1)
+	c <- fmt.Sprintf("%d", part2)
+	c <- fmt.Sprintf("Took %s", elapsed)
+}
+
+func (Assignment) FileName() string { return "day8.txt" }
+
+func (a Assignment) Part1(input []string) int {
+	return performLogic(input, false)
+}
+
+func (a Assignment) Part2(input []string) int {
+	return performLogic(input, true)
+}
+
+//nolint:gocognit
+func performLogic(input []string, includePart2 bool) int {
 	worldHeight, worldWidth := len(input), len(input[0])
 	antennas := getAntennas(input)
 
@@ -28,11 +50,13 @@ func (Assignment) Handle(input []string, c chan<- string) {
 		groupedAntennas[a.frequency] = append(groupedAntennas[a.frequency], a)
 	}
 
-	antiNodeSet, resonantHarmonicsAntiNodeSet := NewAntiNodeSet(), NewAntiNodeSet()
+	antiNodeSet := NewAntiNodeSet()
 
 	for _, antennaGroup := range groupedAntennas {
 		for i, currentAntenna := range antennaGroup {
-			resonantHarmonicsAntiNodeSet.Add(currentAntenna.position)
+			if includePart2 {
+				antiNodeSet.Add(currentAntenna.position)
+			}
 
 			for _, antenna := range antennaGroup[i+1:] {
 				// Vector math b - a means going from a -> b, so we're pointing to current
@@ -43,38 +67,33 @@ func (Assignment) Handle(input []string, c chan<- string) {
 
 				if isInBounds(antiNode1Pos, worldWidth, worldHeight) {
 					antiNodeSet.Add(antiNode1Pos)
-					resonantHarmonicsAntiNodeSet.Add(antiNode1Pos)
 				}
 
 				if isInBounds(antiNode2Pos, worldWidth, worldHeight) {
 					antiNodeSet.Add(antiNode2Pos)
-					resonantHarmonicsAntiNodeSet.Add(antiNode2Pos)
+				}
+
+				if !includePart2 {
+					continue
 				}
 
 				resonantHarmonicsAntiNodePos := antiNode1Pos.Add(diffVec)
 				for isInBounds(resonantHarmonicsAntiNodePos, worldWidth, worldHeight) {
-					resonantHarmonicsAntiNodeSet.Add(resonantHarmonicsAntiNodePos)
+					antiNodeSet.Add(resonantHarmonicsAntiNodePos)
 					resonantHarmonicsAntiNodePos = resonantHarmonicsAntiNodePos.Add(diffVec)
 				}
 
 				resonantHarmonicsAntiNodePos = antiNode2Pos.Sub(diffVec)
 				for isInBounds(resonantHarmonicsAntiNodePos, worldWidth, worldHeight) {
-					resonantHarmonicsAntiNodeSet.Add(resonantHarmonicsAntiNodePos)
+					antiNodeSet.Add(resonantHarmonicsAntiNodePos)
 					resonantHarmonicsAntiNodePos = resonantHarmonicsAntiNodePos.Sub(diffVec)
 				}
 			}
 		}
 	}
 
-	elapsed := time.Since(startTime)
-
-	c <- "Day 8"
-	c <- fmt.Sprintf("%d", antiNodeSet.Length())
-	c <- fmt.Sprintf("%d", resonantHarmonicsAntiNodeSet.Length())
-	c <- fmt.Sprintf("Took %s", elapsed)
+	return antiNodeSet.Length()
 }
-
-func (Assignment) FileName() string { return "day8.txt" }
 
 func isInBounds(pos Vector, width, height int) bool {
 	return pos.X >= 0 && pos.X < width && pos.Y >= 0 && pos.Y < height

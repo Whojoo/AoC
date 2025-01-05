@@ -13,9 +13,9 @@ type Assignment struct{}
 
 func GetAssignment() Assignment { return Assignment{} }
 
-func (Assignment) FileName() string { return "day9_evil.txt" }
+func (Assignment) FileName() string { return "day9.txt" }
 
-func (Assignment) Handle(input []string, c chan<- string) {
+func (a Assignment) Handle(input []string, c chan<- string) {
 	defer close(c)
 
 	if len(input) != 1 {
@@ -24,35 +24,40 @@ func (Assignment) Handle(input []string, c chan<- string) {
 
 	startTime := time.Now()
 
-	diskMap := GenerateDiskMap(input)
-	fragmentedLayout := GenerateDiskLayout(diskMap)
-	structuredLayout := make([]int, len(fragmentedLayout))
-	copy(structuredLayout, fragmentedLayout)
-
-	fragmentedLayout = ShiftToFragmentedLayout(fragmentedLayout)
-	structuredLayout = ShiftToStructuredLayout(structuredLayout)
-
-	fragmentedChecksum := CalculateChecksum(fragmentedLayout)
-	structuredChecksum := CalculateChecksum(structuredLayout)
+	part1, part2 := a.Part1(input), a.Part2(input)
 
 	elapsed := time.Since(startTime)
 
 	c <- "Day 9"
-	c <- fmt.Sprintf("%d", fragmentedChecksum)
-	c <- fmt.Sprintf("%d", structuredChecksum)
+	c <- fmt.Sprintf("%d", part1)
+	c <- fmt.Sprintf("%d", part2)
 	c <- fmt.Sprintf("Took %s", elapsed)
 }
 
-func CalculateChecksum(layout []int) uint64 {
-	checkSum := uint64(0)
+func (Assignment) Part1(input []string) int {
+	diskMap := GenerateDiskMap(input)
+	layout := GenerateDiskLayout(diskMap)
+	fragmentedLayout := ShiftToFragmentedLayout(layout)
+	return CalculateChecksum(fragmentedLayout)
+}
 
-	for i := uint64(0); i < uint64(len(layout)); i++ {
+func (Assignment) Part2(input []string) int {
+	diskMap := GenerateDiskMap(input)
+	layout := GenerateDiskLayout(diskMap)
+	structuredLayout := ShiftToStructuredLayout(layout)
+	return CalculateChecksum(structuredLayout)
+}
+
+func CalculateChecksum(layout []int) int {
+	checkSum := 0
+
+	for i := 0; i < len(layout); i++ {
 		file := layout[i]
 		if file <= freeSpace {
 			continue
 		}
 
-		checkSum += uint64(file) * i //nolint:gosec
+		checkSum += file * i //nolint:gosec
 	}
 
 	return checkSum
@@ -142,10 +147,6 @@ func FindNextFileToMove(layout []int, currentIndex int) (startIndex, endIndex in
 	lastFileStartIndex := currentSpaceToMoveIndex + 1
 
 	return lastFileStartIndex, lastFileEndIndex, true
-}
-
-type EmptyPocket struct {
-	startIndex, endIndex, adjustedStartIndex, capacity int
 }
 
 func GatherEmptySpaces(layout []int) []*MinHeap {

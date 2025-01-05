@@ -15,26 +15,31 @@ func NewAssignment() *Assignment { return new(Assignment) }
 
 func (Assignment) FileName() string { return "day11.txt" }
 
-func (Assignment) Handle(input []string, c chan<- string) {
+func (a Assignment) Handle(input []string, c chan<- string) {
 	defer close(c)
 
 	startTime := time.Now()
 
-	initialConfiguration := GenerateInitialConfiguration(input)
-	const initialIterations, bonusIterations = 25, 50
-
-	adjustedConfiguration := PerformRulesOn(initialConfiguration, initialIterations)
-	initialCounter := CountMembers(adjustedConfiguration)
-
-	finalConfiguration := PerformRulesOn(adjustedConfiguration, bonusIterations)
-	bonusCounter := CountMembers(finalConfiguration)
+	part1, part2 := a.Part1(input), a.Part2(input)
 
 	elapsed := time.Since(startTime)
 
 	c <- "Day 11"
-	c <- fmt.Sprintf("%d", initialCounter)
-	c <- fmt.Sprintf("%d", bonusCounter)
+	c <- fmt.Sprintf("%d", part1)
+	c <- fmt.Sprintf("%d", part2)
 	c <- fmt.Sprintf("Took %s", elapsed)
+}
+
+func (Assignment) Part1(input []string) int {
+	initialConfiguration := GenerateInitialConfiguration(input)
+	finalConfiguration := PerformRulesOn(initialConfiguration, 25)
+	return CountMembers(finalConfiguration)
+}
+
+func (Assignment) Part2(input []string) int {
+	initialConfiguration := GenerateInitialConfiguration(input)
+	finalConfiguration := PerformRulesOn(initialConfiguration, 75)
+	return CountMembers(finalConfiguration)
 }
 
 func PerformRulesOn(initialConfiguration map[uint64]int, iterations int) map[uint64]int {

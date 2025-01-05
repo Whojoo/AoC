@@ -13,13 +13,13 @@ func GetAssignment() Assignment {
 	return Assignment{}
 }
 
-func (Assignment) Handle(input []string, c chan<- string) {
+func (a Assignment) Handle(input []string, c chan<- string) {
 	startTime := time.Now()
-	first := HandleFirst(input)
+	first := a.Part1(input)
 	firstTime := time.Since(startTime)
 
 	startTime = time.Now()
-	second := HandleSecond(input)
+	second := a.Part2(input)
 	secondTime := time.Since(startTime)
 
 	c <- "Day 4"
@@ -33,7 +33,7 @@ func (Assignment) FileName() string {
 	return "day4.txt"
 }
 
-func HandleFirst(input []string) int {
+func (Assignment) Part1(input []string) int {
 	// grid[y][x]
 	grid := toGrid(input)
 	sum := 0
@@ -50,7 +50,7 @@ func HandleFirst(input []string) int {
 	return sum
 }
 
-func HandleSecond(input []string) int {
+func (Assignment) Part2(input []string) int {
 	// grid[y][x]
 	grid := toGrid(input)
 	sum := 0

@@ -2,6 +2,7 @@ package day11_test
 
 import (
 	"github.com/Whojoo/AoC/2024/day11"
+	"github.com/Whojoo/AoC/2024/shared"
 	"testing"
 )
 
@@ -18,7 +19,7 @@ func TestAssignment_Handle(t *testing.T) {
 			},
 			results: []string{
 				"55312",
-				"0",
+				"65601038650482",
 			},
 		},
 	}
@@ -43,5 +44,27 @@ func TestAssignment_Handle(t *testing.T) {
 				t.Errorf("got %v, want %v", got2, test.results[1])
 			}
 		})
+	}
+}
+
+func BenchmarkAssignment_Part1(b *testing.B) {
+	b.StopTimer()
+	assignment := day11.NewAssignment()
+	input := shared.ReadInput("../input/" + assignment.FileName())
+	b.StartTimer()
+
+	for n := 0; n < b.N; n++ {
+		assignment.Part1(input)
+	}
+}
+
+func BenchmarkAssignment_Part2(b *testing.B) {
+	b.StopTimer()
+	assignment := day11.NewAssignment()
+	input := shared.ReadInput("../input/" + assignment.FileName())
+	b.StartTimer()
+
+	for n := 0; n < b.N; n++ {
+		assignment.Part2(input)
 	}
 }

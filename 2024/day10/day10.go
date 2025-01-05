@@ -19,46 +19,61 @@ func NewAssignment() Assignment { return Assignment{} }
 
 func (Assignment) FileName() string { return "day10.txt" }
 
-func (Assignment) Handle(input []string, c chan<- string) {
+func (a Assignment) Handle(input []string, c chan<- string) {
 	defer close(c)
 
 	startTime := time.Now()
 
-	world := GenerateWorld(input)
-	trailHeadScores, uniqueTrails := CountTrailheadScores(world)
+	part1, part2 := a.Part1(input), a.Part2(input)
 
 	elapsed := time.Since(startTime)
 
 	c <- "Day 10"
-	c <- fmt.Sprintf("%d", trailHeadScores)
-	c <- fmt.Sprintf("%d", uniqueTrails)
+	c <- fmt.Sprintf("%d", part1)
+	c <- fmt.Sprintf("%d", part2)
 	c <- fmt.Sprintf("Took %s", elapsed)
 }
 
-func CountTrailheadScores(world []*Node) (score, uniqueTrails int) {
+func (a Assignment) Part1(input []string) int {
+	world := GenerateWorld(input)
 	trailHeads := shared.Filter(world, func(n *Node) bool { return n.Height == targetHeight })
 
-	for _, startNode := range trailHeads {
-		trailScore, trailCount := CountTrailheadScore(startNode)
-		score += trailScore
-		uniqueTrails += trailCount
+	score := 0
+	for _, trailHead := range trailHeads {
+		uniqueTrailsPerHike := CountTrailheadScore2(trailHead)
+		score += len(uniqueTrailsPerHike)
 	}
 
-	return score, uniqueTrails
+	return score
 }
 
-func CountTrailheadScore(trailHead *Node) (score, uniqueTrails int) {
+func (a Assignment) Part2(input []string) int {
+	world := GenerateWorld(input)
+	trailHeads := shared.Filter(world, func(n *Node) bool { return n.Height == targetHeight })
+
+	score := 0
+	for _, trailHead := range trailHeads {
+		uniqueTrailsPerHike := CountTrailheadScore2(trailHead)
+
+		for _, v := range uniqueTrailsPerHike {
+			score += v
+		}
+	}
+
+	return score
+}
+
+func CountTrailheadScore2(trailHead *Node) map[int]int {
 	nodeStack := NewNodeStack()
 	nodeStack.Push(trailHead)
 
-	startingNodeSet := make(NodeSet)
+	uniqueTrailsPerHike := make(map[int]int)
 
 	for nodeStack.Len() > 0 {
 		current := nodeStack.Pop()
 
 		if current.Height == startPositionHeight {
-			startingNodeSet.Add(current)
-			uniqueTrails++
+			uniqueTrailsPerHike[current.ID]++
 			continue
 		}
 
@@ -70,9 +85,7 @@ func CountTrailheadScore(trailHead *Node) (score, uniqueTrails int) {
 		}
 	}
 
-	score = startingNodeSet.Len()
-
-	return score, uniqueTrails
+	return uniqueTrailsPerHike
 }
 
 func GenerateWorld(input []string) []*Node {

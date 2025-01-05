@@ -2,6 +2,7 @@ package day9_test
 
 import (
 	"github.com/Whojoo/AoC/2024/day9"
+	"github.com/Whojoo/AoC/2024/shared"
 	"testing"
 )
 
@@ -36,10 +37,10 @@ func TestAssignment_Handle(t *testing.T) {
 			assignment := day9.GetAssignment()
 			go assignment.Handle(test.input, c)
 
-			_ = <-c
+			<-c
 			got1 := <-c
 			got2 := <-c
-			_ = <-c
+			<-c
 
 			if got1 != test.results[0] {
 				t.Errorf("got %s, want %s", got1, test.results[0])
@@ -49,5 +50,35 @@ func TestAssignment_Handle(t *testing.T) {
 				t.Errorf("got %s, want %s", got2, test.results[1])
 			}
 		})
+	}
+}
+
+func BenchmarkAssignment_Part2(b *testing.B) {
+	input := shared.ReadInput("../input/day9.txt")
+	assignment := day9.GetAssignment()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		assignment.Part2(input)
+	}
+}
+
+func BenchmarkAssignment_Part2_Bonus(b *testing.B) {
+	input := shared.ReadInput("../exampleInput/day9_bonus.txt")
+	assignment := day9.GetAssignment()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		assignment.Part2(input)
+	}
+}
+
+func BenchmarkAssignment_Part2_Evil(b *testing.B) {
+	input := shared.ReadInput("../exampleInput/day9_evil.txt")
+	assignment := day9.GetAssignment()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		assignment.Part2(input)
 	}
 }

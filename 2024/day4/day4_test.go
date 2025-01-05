@@ -25,7 +25,7 @@ func TestHandleFirst(t *testing.T) {
 	want := 18
 
 	// Act
-	got := day4.HandleFirst(input)
+	got := day4.GetAssignment().Part1(input)
 
 	// Assert
 	if got != want {
@@ -52,7 +52,7 @@ func TestHandleSecond(t *testing.T) {
 	want := 9
 
 	// Act
-	got := day4.HandleSecond(input)
+	got := day4.GetAssignment().Part2(input)
 
 	// Assert
 	if got != want {

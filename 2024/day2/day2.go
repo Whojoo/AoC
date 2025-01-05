@@ -12,31 +12,7 @@ import (
 
 type Assignment struct{}
 
-func GetAssignment() Assignment {
-	return Assignment{}
-}
-
-func (Assignment) Handle(input []string, c chan<- string) {
-	startTime := time.Now()
-	first := HandleFirst(input)
-	firstTime := time.Since(startTime)
-
-	startTime = time.Now()
-	second := HandleSecond(input)
-	secondTime := time.Since(startTime)
-
-	c <- "Day 2"
-	c <- fmt.Sprintf("First result: %d in %s", first, firstTime)
-	c <- fmt.Sprintf("Second result: %d in %s", second, secondTime)
-
-	close(c)
-}
-
-func (Assignment) FileName() string {
-	return "day2.txt"
-}
-
-func HandleFirst(input []string) int {
+func (a Assignment) Part1(input []string) int {
 	// Create int slices
 	reports := createIntSlices(input)
 
@@ -48,7 +24,7 @@ func HandleFirst(input []string) int {
 	return sum
 }
 
-func HandleSecond(input []string) int {
+func (a Assignment) Part2(input []string) int {
 	// Create int slices
 	reports := createIntSlices(input)
 
@@ -58,6 +34,30 @@ func HandleSecond(input []string) int {
 	}
 
 	return sum
+}
+
+func GetAssignment() Assignment {
+	return Assignment{}
+}
+
+func (a Assignment) Handle(input []string, c chan<- string) {
+	startTime := time.Now()
+	first := a.Part1(input)
+	firstTime := time.Since(startTime)
+
+	startTime = time.Now()
+	second := a.Part2(input)
+	secondTime := time.Since(startTime)
+
+	c <- "Day 2"
+	c <- fmt.Sprintf("First result: %d in %s", first, firstTime)
+	c <- fmt.Sprintf("Second result: %d in %s", second, secondTime)
+
+	close(c)
+}
+
+func (Assignment) FileName() string {
+	return "day2.txt"
 }
 
 type direction int

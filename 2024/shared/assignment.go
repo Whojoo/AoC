@@ -2,5 +2,6 @@ package shared
 
 type Assignment interface {
 	FileName() string
-	Handle(input []string, c chan<- string)
+	Part1(input []string) int
+	Part2(input []string) int
 }
