@@ -66,11 +66,11 @@ func TestAssignment_Part2(t *testing.T) {
 			inputPath: "../exampleInput/day12_2.txt",
 			want:      436,
 		},
-		"Extra Example 3": {
+		"E made out of E's": {
 			inputPath: "../exampleInput/day12_3.txt",
 			want:      236,
 		},
-		"Extra Example 4": {
+		"ABBA": {
 			inputPath: "../exampleInput/day12_4.txt",
 			want:      368,
 		},
