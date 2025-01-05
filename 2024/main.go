@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/Whojoo/AoC/2024/day1"
 	"github.com/Whojoo/AoC/2024/day10"
 	"github.com/Whojoo/AoC/2024/day11"
@@ -12,7 +14,6 @@ import (
 	"github.com/Whojoo/AoC/2024/day8"
 	"github.com/Whojoo/AoC/2024/day9"
 	"github.com/Whojoo/AoC/2024/shared"
-	"time"
 
 	"github.com/Whojoo/AoC/2024/day6"
 )

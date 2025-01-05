@@ -77,6 +77,13 @@ func (a Assignment) Part2(input []string) int {
 	return guardLoopsIncrementer.Get()
 }
 
+type Grid struct {
+	field     [][]Tile
+	playerX   int
+	playerY   int
+	direction Direction
+}
+
 func (g *Grid) RunGuardRoute() bool {
 	g.SetupPlayerRotation()
 	g.playerX += g.direction.X
@@ -256,13 +263,6 @@ func (t *Tile) Copy() Tile {
 	newTile.WalkedDirections = append(newTile.WalkedDirections, t.WalkedDirections...)
 
 	return newTile
-}
-
-type Grid struct {
-	field     [][]Tile
-	playerX   int
-	playerY   int
-	direction Direction
 }
 
 func (g *Grid) SetupPlayerRotation() {

@@ -1,8 +1,9 @@
 package day6_test
 
 import (
-	"github.com/Whojoo/AoC/2024/shared"
 	"testing"
+
+	"github.com/Whojoo/AoC/2024/shared"
 
 	"github.com/Whojoo/AoC/2024/day6"
 )
@@ -34,9 +35,6 @@ func TestHandleFirst(t *testing.T) {
 	}
 }
 
-// Ignore function length linting for table driven test
-//
-//nolint:funlen
 func TestHandleSecond_WhenGivenExampleInput_ShouldReturnCorrectResult(t *testing.T) {
 	t.Parallel()
 

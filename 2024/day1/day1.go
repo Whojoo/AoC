@@ -72,8 +72,8 @@ func (Assignment) FileName() string {
 	return "day1.txt"
 }
 
-func createIntSlices(input []string) ([]int, []int) {
-	left, right := make([]int, len(input)), make([]int, len(input))
+func createIntSlices(input []string) (left, right []int) {
+	left, right = make([]int, len(input)), make([]int, len(input))
 
 	for i, line := range input {
 		fields := strings.Fields(line)

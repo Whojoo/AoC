@@ -1,6 +1,6 @@
 PACKAGE=./...
 
-build:
+build: lint
 	go build
 
 run: build
@@ -13,4 +13,10 @@ benchmark:
 	go test ${PACKAGE} -bench=. -benchtime=5s
 
 clean:
-	rm 2024
+	go clean
+
+lint: format
+	golangci-lint run ./... --fast --config=./.golangci.yaml
+
+format:
+	gofumpt -l -w .

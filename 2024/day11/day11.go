@@ -2,11 +2,12 @@ package day11
 
 import (
 	"fmt"
-	"github.com/Whojoo/AoC/2024/shared"
 	"math"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Whojoo/AoC/2024/shared"
 )
 
 type Assignment struct{}
@@ -32,13 +33,15 @@ func (a Assignment) Handle(input []string, c chan<- string) {
 
 func (Assignment) Part1(input []string) int {
 	initialConfiguration := GenerateInitialConfiguration(input)
-	finalConfiguration := PerformRulesOn(initialConfiguration, 25)
+	iterations := 25
+	finalConfiguration := PerformRulesOn(initialConfiguration, iterations)
 	return CountMembers(finalConfiguration)
 }
 
 func (Assignment) Part2(input []string) int {
 	initialConfiguration := GenerateInitialConfiguration(input)
-	finalConfiguration := PerformRulesOn(initialConfiguration, 75)
+	iterations := 75
+	finalConfiguration := PerformRulesOn(initialConfiguration, iterations)
 	return CountMembers(finalConfiguration)
 }
 

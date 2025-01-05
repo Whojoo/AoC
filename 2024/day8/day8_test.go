@@ -1,11 +1,11 @@
 package day8_test
 
 import (
-	"github.com/Whojoo/AoC/2024/day8"
 	"testing"
+
+	"github.com/Whojoo/AoC/2024/day8"
 )
 
-//nolint:funlen
 func TestHandle(t *testing.T) {
 	t.Parallel()
 
@@ -120,10 +120,10 @@ func TestHandle(t *testing.T) {
 			assignment := day8.GetAssignment()
 			go assignment.Handle(test.input, c)
 
-			_ = <-c
+			<-c
 			result := <-c
 			result2 := <-c
-			_ = <-c
+			<-c
 
 			if result != test.results[1] {
 				t.Fatalf("want %s, got %s", test.results[1], result)

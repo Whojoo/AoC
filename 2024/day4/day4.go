@@ -95,7 +95,7 @@ var (
 	downRight = direction{1, 1}
 )
 
-func searchGrid(grid [][]string, x int, y int) int {
+func searchGrid(grid [][]string, x, y int) int {
 	return crawlGrid(grid, x, y, 1, upLeft, firstLettersInOrder) +
 		crawlGrid(grid, x, y, 1, upRight, firstLettersInOrder) +
 		crawlGrid(grid, x, y, 1, up, firstLettersInOrder) +
@@ -106,7 +106,7 @@ func searchGrid(grid [][]string, x int, y int) int {
 		crawlGrid(grid, x, y, 1, downRight, firstLettersInOrder)
 }
 
-func searchGridForCrossedMAS(grid [][]string, x int, y int) int {
+func searchGridForCrossedMAS(grid [][]string, x, y int) int {
 	cross1 := []string{"A", getFromGrid(grid, x, y, upLeft), getFromGrid(grid, x, y, downRight)}
 	cross2 := []string{"A", getFromGrid(grid, x, y, upRight), getFromGrid(grid, x, y, downLeft)}
 
@@ -121,7 +121,7 @@ func searchGridForCrossedMAS(grid [][]string, x int, y int) int {
 	return 0
 }
 
-func eq(l []string, r []string) bool {
+func eq(l, r []string) bool {
 	if len(l) != len(r) {
 		return false
 	}
@@ -135,7 +135,7 @@ func eq(l []string, r []string) bool {
 	return true
 }
 
-func getFromGrid(grid [][]string, x int, y int, movementDirection direction) string {
+func getFromGrid(grid [][]string, x, y int, movementDirection direction) string {
 	if !canCrawl(grid, x, y, movementDirection) {
 		return ""
 	}
@@ -143,7 +143,7 @@ func getFromGrid(grid [][]string, x int, y int, movementDirection direction) str
 	return grid[y+movementDirection.Y][x+movementDirection.X]
 }
 
-func crawlGrid(grid [][]string, x int, y int, depth int, movementDirection direction, word []string) int {
+func crawlGrid(grid [][]string, x, y, depth int, movementDirection direction, word []string) int {
 	if depth >= len(word) {
 		return 0
 	}
@@ -165,7 +165,7 @@ func crawlGrid(grid [][]string, x int, y int, depth int, movementDirection direc
 	return crawlGrid(grid, newX, newY, depth+1, movementDirection, word)
 }
 
-func canCrawl(grid [][]string, x int, y int, movementDirection direction) bool {
+func canCrawl(grid [][]string, x, y int, movementDirection direction) bool {
 	newX, newY := x+movementDirection.X, y+movementDirection.Y
 
 	isBelowZero := newX < 0 || newY < 0

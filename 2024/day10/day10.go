@@ -2,10 +2,11 @@ package day10
 
 import (
 	"fmt"
-	"github.com/Whojoo/AoC/2024/shared"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Whojoo/AoC/2024/shared"
 )
 
 const (

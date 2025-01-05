@@ -1,8 +1,9 @@
 package day10_test
 
 import (
-	"github.com/Whojoo/AoC/2024/day10"
 	"testing"
+
+	"github.com/Whojoo/AoC/2024/day10"
 )
 
 func TestAssignment_Handle(t *testing.T) {

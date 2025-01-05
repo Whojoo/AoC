@@ -3,10 +3,11 @@ package day9
 import (
 	"container/heap"
 	"fmt"
-	"github.com/Whojoo/AoC/2024/shared"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Whojoo/AoC/2024/shared"
 )
 
 type Assignment struct{}
@@ -57,7 +58,7 @@ func CalculateChecksum(layout []int) int {
 			continue
 		}
 
-		checkSum += file * i //nolint:gosec
+		checkSum += file * i
 	}
 
 	return checkSum
@@ -154,23 +155,24 @@ func GatherEmptySpaces(layout []int) []*MinHeap {
 	maxLength := 0
 
 	for i := 0; i < len(layout); i++ {
-		if layout[i] == freeSpace {
-			startIndex := i
-			length := 1
-			j := i + 1
-			for ; j < len(layout); j++ {
-				if layout[j] == freeSpace {
-					length++
-				} else {
-					j--
-					break
-				}
-			}
-
-			i = j
-			maxLength = max(maxLength, length)
-			emptySpaces = append(emptySpaces, struct{ startIndex, length int }{startIndex, length})
+		if layout[i] != freeSpace {
+			continue
 		}
+
+		length := 1
+		j := i + 1
+		for ; j < len(layout); j++ {
+			if layout[j] == freeSpace {
+				length++
+			} else {
+				j--
+				break
+			}
+		}
+
+		emptySpaces = append(emptySpaces, struct{ startIndex, length int }{i, length})
+		i = j
+		maxLength = max(maxLength, length)
 	}
 
 	heaps := make([]*MinHeap, maxLength+1)
@@ -255,6 +257,7 @@ func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
 func (h *MinHeap) Push(x interface{}) {
 	*h = append(*h, x.(int))
 }
+
 func (h *MinHeap) Pop() interface{} {
 	old := *h
 	n := len(old)
@@ -262,6 +265,7 @@ func (h *MinHeap) Pop() interface{} {
 	*h = old[0 : n-1]
 	return x
 }
+
 func (h MinHeap) Peek() int {
 	return h[0]
 }

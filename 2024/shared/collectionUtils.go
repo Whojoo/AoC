@@ -18,3 +18,11 @@ func Filter[K any](objs []K, f func(K) bool) []K {
 
 	return result
 }
+
+func Sum[K any](objs []K, f func(K) int) int {
+	sum := 0
+	for _, obj := range objs {
+		sum += f(obj)
+	}
+	return sum
+}
