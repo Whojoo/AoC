@@ -10,10 +10,16 @@ test:
 	go test ${PACKAGE}
 
 benchmark:
-	go test ${PACKAGE} -bench=. -benchtime=5s
+	go test ${PACKAGE} -bench=.
+
+benchmark-stats:
+	go test ${PACKAGE} -bench=. -count=20 -benchmem | tee stats.txt
+	benchstat stats.txt
 
 clean:
 	go clean
+	go mod tidy
+	rm stats.txt
 
 lint: format
 	golangci-lint run ./... --fast --config=./.golangci.yaml

@@ -1,9 +1,8 @@
 package day12
 
 import (
-	"strings"
-
-	"github.com/Whojoo/AoC/2024/shared"
+	"fmt"
+	"iter"
 )
 
 type Assignment struct{}
@@ -13,113 +12,189 @@ func NewAssignment() *Assignment { return new(Assignment) }
 func (a Assignment) FileName() string { return "day12.txt" }
 
 func (a Assignment) Part1(input []string) int {
-	garden := createGarden(input)
-	mappedGarden := make(map[int][]*GardenPlot)
-
-	for _, gardenPlot := range garden {
-		if gardenPlot.IsCreated {
-			continue
-		}
-
-		mappedGarden[gardenPlot.ID] = gardenPlot.CreateGarden()
-	}
+	garden := createPrimitiveGarden(input)
 
 	price := 0
+	visited := NewPlotSet()
 
-	for _, gardenPlots := range mappedGarden {
-		area := len(gardenPlots)
-		perimeter := shared.Sum(gardenPlots, func(g *GardenPlot) int { return g.Perimeter() })
-		plotPrice := area * perimeter
-		price += plotPrice
+	for row, gardenPlots := range garden {
+		for column := range gardenPlots {
+			if visited.Contains(row, column) {
+				continue
+			}
+
+			price += CalculateAreaPerimeterPrice(row, column, garden, visited)
+		}
 	}
 
 	return price
 }
 
 func (a Assignment) Part2(input []string) int {
+	garden := createPrimitiveGarden(input)
+	garden.RenderGarden()
 	return len(input)
 }
 
-func createGarden(input []string) []*GardenPlot {
-	currentID := 0
-	garden := make([]*GardenPlot, 0)
-	var previousGardenRow []*GardenPlot
+func CalculateAreaPerimeterPrice(row, column int, garden Garden, visited *PlotSet) int {
+	const maxPerimeter = 4
+	queue := NewPlotQueue()
+	queue.Queue(Plot{row, column, garden[row][column]})
 
-	for _, gardenRow := range input {
-		gardenPlotRow := shared.Project(strings.Split(gardenRow, ""), func(s string, _ int) *GardenPlot {
-			gardenPlot := NewGardenPlot(currentID, s)
-			currentID++
-			return gardenPlot
-		})
+	var perimeter, area int
 
-		for i, gardenPlot := range gardenPlotRow {
-			if i > 0 {
-				gardenPlot.AddNeighbour(gardenPlotRow[i-1])
-				gardenPlotRow[i-1].AddNeighbour(gardenPlot)
-			}
+	for !queue.IsEmpty() {
+		currentPlot := queue.Dequeue()
 
-			if len(previousGardenRow) > 0 {
-				gardenPlot.AddNeighbour(previousGardenRow[i])
-				previousGardenRow[i].AddNeighbour(gardenPlot)
+		if visited.Contains(currentPlot.row, currentPlot.column) {
+			continue
+		}
+
+		visited.Add(currentPlot.row, currentPlot.column)
+
+		currentPerimeter := maxPerimeter
+		neighbours := garden.GetNeighbours(currentPlot.row, currentPlot.column)
+
+		for neighbour := range neighbours {
+			if neighbour.plotType == garden[row][column] {
+				currentPerimeter--
+
+				if !visited.Contains(neighbour.row, neighbour.column) {
+					queue.Queue(neighbour)
+				}
 			}
 		}
 
-		previousGardenRow = gardenPlotRow
-		garden = append(garden, gardenPlotRow...)
+		area++
+		perimeter += currentPerimeter
+	}
+
+	return perimeter * area
+}
+
+type PlotQueue []Plot
+
+func NewPlotQueue() *PlotQueue { return new(PlotQueue) }
+
+func (q *PlotQueue) Len() int        { return len(*q) }
+func (q *PlotQueue) Peek() Plot      { return (*q)[0] }
+func (q *PlotQueue) IsEmpty() bool   { return len(*q) == 0 }
+func (q *PlotQueue) Queue(plot Plot) { *q = append(*q, plot) }
+
+func (q *PlotQueue) Dequeue() Plot {
+	if len(*q) == 0 {
+		panic("Empty queue")
+	}
+
+	oldQueue := *q
+	plot := oldQueue[0]
+	*q = oldQueue[1:]
+	return plot
+}
+
+type Plot struct {
+	row, column int
+	plotType    rune
+}
+
+type PlotSet map[struct{ row, column int }]struct{}
+
+func NewPlotSet() *PlotSet { return &PlotSet{} }
+
+func (ps *PlotSet) Add(row, column int) bool {
+	plot := struct{ row, column int }{row, column}
+
+	if ps.containsInternal(plot) {
+		return false
+	}
+
+	(*ps)[plot] = struct{}{}
+	return true
+}
+
+func (ps *PlotSet) Contains(row, column int) bool {
+	return ps.containsInternal(struct{ row, column int }{row, column})
+}
+
+func (ps *PlotSet) containsInternal(plot struct{ row, column int }) bool {
+	_, found := (*ps)[plot]
+	return found
+}
+
+type Garden [][]rune
+
+func (g Garden) Get(row, column int) (value rune, found bool) {
+	if row < 0 || column < 0 || row >= len(g) || column >= len(g[row]) {
+		return 0, false
+	}
+
+	return g[row][column], true
+}
+
+func (g Garden) GetNeighbours(row, column int) iter.Seq[Plot] {
+	return func(yield func(Plot) bool) {
+		if plotType, ok := g.Get(row+1, column); ok {
+			plot := Plot{row + 1, column, plotType}
+			if !yield(plot) {
+				return
+			}
+		}
+
+		if plotType, ok := g.Get(row-1, column); ok {
+			plot := Plot{row - 1, column, plotType}
+			if !yield(plot) {
+				return
+			}
+		}
+
+		if plotType, ok := g.Get(row, column-1); ok {
+			plot := Plot{row, column - 1, plotType}
+			if !yield(plot) {
+				return
+			}
+		}
+
+		if plotType, ok := g.Get(row, column+1); ok {
+			plot := Plot{row, column + 1, plotType}
+			if !yield(plot) {
+				return
+			}
+		}
+	}
+}
+
+func (g Garden) RenderGarden() {
+	width := len(g[0])*2 + 1
+
+	var emptyRow string
+	for range width {
+		emptyRow += "."
+	}
+
+	fmt.Println(emptyRow)
+
+	for _, gardenRow := range g {
+		renderRow := "."
+
+		for _, plot := range gardenRow {
+			renderRow += string(plot) + "."
+		}
+
+		fmt.Println(renderRow)
+	}
+
+	fmt.Println(emptyRow)
+}
+
+func createPrimitiveGarden(input []string) Garden {
+	garden := make(Garden, len(input))
+
+	for row, line := range input {
+		garden[row] = make([]rune, len(line))
+		for column, letterRune := range line {
+			garden[row][column] = letterRune
+		}
 	}
 
 	return garden
-}
-
-type GardenPlot struct {
-	ID         int
-	IsCreated  bool
-	Neighbours []*GardenPlot
-	PlantType  string
-}
-
-func NewGardenPlot(id int, plantType string) *GardenPlot {
-	return &GardenPlot{
-		ID:         id,
-		IsCreated:  false,
-		Neighbours: make([]*GardenPlot, 0),
-		PlantType:  plantType,
-	}
-}
-
-func (g *GardenPlot) AddNeighbour(neighbour *GardenPlot) {
-	g.Neighbours = append(g.Neighbours, neighbour)
-}
-
-func (g *GardenPlot) Perimeter() int {
-	const startingPerimeter = 4
-	fellowPlots := shared.Filter(g.Neighbours, func(n *GardenPlot) bool { return g.ID == n.ID })
-	return startingPerimeter - len(fellowPlots)
-}
-
-func (g *GardenPlot) ConnectToGarden(id int) []*GardenPlot {
-	g.ID = id
-	g.IsCreated = true
-	fellowPlots := []*GardenPlot{g}
-
-	for _, neighbour := range g.Neighbours {
-		if neighbour.ID != id && neighbour.PlantType == g.PlantType {
-			fellowPlots = append(fellowPlots, neighbour.ConnectToGarden(id)...)
-		}
-	}
-
-	return fellowPlots
-}
-
-func (g *GardenPlot) CreateGarden() []*GardenPlot {
-	fellowPlots := []*GardenPlot{g}
-	g.IsCreated = true
-
-	for _, neighbour := range g.Neighbours {
-		if neighbour.PlantType == g.PlantType && neighbour.ID != g.ID {
-			fellowPlots = append(fellowPlots, neighbour.ConnectToGarden(g.ID)...)
-		}
-	}
-
-	return fellowPlots
 }

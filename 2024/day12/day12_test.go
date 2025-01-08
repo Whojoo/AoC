@@ -94,3 +94,21 @@ func TestAssignment_Part2(t *testing.T) {
 		})
 	}
 }
+
+var global int
+
+func BenchmarkAssignment_Part1(b *testing.B) {
+	var local int
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		b.StopTimer()
+		input := shared.ReadInput("../input/day12.txt")
+		assignment := day12.NewAssignment()
+		b.StartTimer()
+
+		local = assignment.Part1(input)
+	}
+
+	global = local
+}
