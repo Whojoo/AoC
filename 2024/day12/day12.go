@@ -1,8 +1,8 @@
 package day12
 
 import (
-	"fmt"
 	"iter"
+	"slices"
 )
 
 type Assignment struct{}
@@ -12,7 +12,7 @@ func NewAssignment() *Assignment { return new(Assignment) }
 func (a Assignment) FileName() string { return "day12.txt" }
 
 func (a Assignment) Part1(input []string) int {
-	garden := createPrimitiveGarden(input)
+	garden := createGarden(input)
 
 	price := 0
 	visited := NewPlotSet()
@@ -31,9 +31,61 @@ func (a Assignment) Part1(input []string) int {
 }
 
 func (a Assignment) Part2(input []string) int {
-	garden := createPrimitiveGarden(input)
-	garden.RenderGarden()
-	return len(input)
+	garden := createGarden(input)
+	// ignore this stuff garden.RenderGarden()
+
+	price := 0
+	visited := NewPlotSet()
+
+	for row, gardenPlots := range garden {
+		for column := range gardenPlots {
+			if visited.Contains(row, column) {
+				continue
+			}
+
+			price += CalculateAreaSidePrice(row, column, garden, visited)
+		}
+	}
+
+	return price
+}
+
+func CalculateAreaSidePrice(row, column int, garden Garden, visited *PlotSet) int {
+	queue := NewPlotQueue()
+	queue.Queue(Plot{row, column, garden[row][column]})
+
+	var area, sides int
+	sideStore := make(SideStore)
+
+	for !queue.IsEmpty() {
+		currentPlot := queue.Dequeue()
+
+		if visited.Contains(currentPlot.row, currentPlot.column) {
+			continue
+		}
+
+		visited.Add(currentPlot.row, currentPlot.column)
+
+		for plotSide := range garden.GetSides(currentPlot.row, currentPlot.column) {
+			isSameType := plotSide.hasPlot && plotSide.plot.plotType == garden[row][column]
+			isVisited := visited.Contains(plotSide.plot.row, plotSide.plot.column)
+
+			if isSameType && !isVisited {
+				queue.Queue(plotSide.plot)
+			} else if !isSameType {
+				sideStore.AddSide(plotSide.sideHeight, plotSide.sideLocation, plotSide.orientation, plotSide.sidePresence)
+			}
+		}
+
+		area++
+	}
+
+	sides = 0
+	for _, v := range sideStore {
+		sides += len(v)
+	}
+
+	return sides * area
 }
 
 func CalculateAreaPerimeterPrice(row, column int, garden Garden, visited *PlotSet) int {
@@ -53,9 +105,8 @@ func CalculateAreaPerimeterPrice(row, column int, garden Garden, visited *PlotSe
 		visited.Add(currentPlot.row, currentPlot.column)
 
 		currentPerimeter := maxPerimeter
-		neighbours := garden.GetNeighbours(currentPlot.row, currentPlot.column)
 
-		for neighbour := range neighbours {
+		for neighbour := range garden.GetNeighbours(currentPlot.row, currentPlot.column) {
 			if neighbour.plotType == garden[row][column] {
 				currentPerimeter--
 
@@ -90,6 +141,14 @@ func (q *PlotQueue) Dequeue() Plot {
 	plot := oldQueue[0]
 	*q = oldQueue[1:]
 	return plot
+}
+
+type PlotSide struct {
+	plot                     Plot
+	hasPlot                  bool
+	orientation              SideOrientation
+	sidePresence             SidePresence
+	sideHeight, sideLocation int
 }
 
 type Plot struct {
@@ -131,6 +190,62 @@ func (g Garden) Get(row, column int) (value rune, found bool) {
 	return g[row][column], true
 }
 
+func (g Garden) GetSides(row, column int) iter.Seq[PlotSide] {
+	return func(yield func(side PlotSide) bool) {
+		plotType, ok := g.Get(row+1, column)
+		plotSide := PlotSide{
+			plot:         Plot{row + 1, column, plotType},
+			hasPlot:      ok,
+			orientation:  horizontal,
+			sideHeight:   row + 1,
+			sideLocation: column,
+			sidePresence: left,
+		}
+		if !yield(plotSide) {
+			return
+		}
+
+		plotType, ok = g.Get(row, column+1)
+		plotSide = PlotSide{
+			plot:         Plot{row, column + 1, plotType},
+			hasPlot:      ok,
+			orientation:  vertical,
+			sideHeight:   column + 1,
+			sideLocation: row,
+			sidePresence: left,
+		}
+		if !yield(plotSide) {
+			return
+		}
+
+		plotType, ok = g.Get(row-1, column)
+		plotSide = PlotSide{
+			plot:         Plot{row - 1, column, plotType},
+			hasPlot:      ok,
+			orientation:  horizontal,
+			sideHeight:   row,
+			sideLocation: column,
+			sidePresence: right,
+		}
+		if !yield(plotSide) {
+			return
+		}
+
+		plotType, ok = g.Get(row, column-1)
+		plotSide = PlotSide{
+			plot:         Plot{row, column - 1, plotType},
+			hasPlot:      ok,
+			orientation:  vertical,
+			sideHeight:   column,
+			sideLocation: row,
+			sidePresence: right,
+		}
+		if !yield(plotSide) {
+			return
+		}
+	}
+}
+
 func (g Garden) GetNeighbours(row, column int) iter.Seq[Plot] {
 	return func(yield func(Plot) bool) {
 		if plotType, ok := g.Get(row+1, column); ok {
@@ -163,30 +278,7 @@ func (g Garden) GetNeighbours(row, column int) iter.Seq[Plot] {
 	}
 }
 
-func (g Garden) RenderGarden() {
-	width := len(g[0])*2 + 1
-
-	var emptyRow string
-	for range width {
-		emptyRow += "."
-	}
-
-	fmt.Println(emptyRow)
-
-	for _, gardenRow := range g {
-		renderRow := "."
-
-		for _, plot := range gardenRow {
-			renderRow += string(plot) + "."
-		}
-
-		fmt.Println(renderRow)
-	}
-
-	fmt.Println(emptyRow)
-}
-
-func createPrimitiveGarden(input []string) Garden {
+func createGarden(input []string) Garden {
 	garden := make(Garden, len(input))
 
 	for row, line := range input {
@@ -197,4 +289,83 @@ func createPrimitiveGarden(input []string) Garden {
 	}
 
 	return garden
+}
+
+type SideOrientation int
+
+const (
+	horizontal SideOrientation = iota
+	vertical
+)
+
+type SidePresence int
+
+const (
+	left SidePresence = iota
+	right
+)
+
+type Side struct {
+	start, end   int
+	orientation  SideOrientation
+	sidePresence SidePresence
+}
+
+type SideStore map[int][]*Side
+
+func (s *SideStore) AddSide(sideHeight, location int, orientation SideOrientation, sidePresence SidePresence) {
+	store := *s
+	sides, ok := store[sideHeight]
+	if !ok {
+		sides = make([]*Side, 0)
+		store[sideHeight] = sides
+	}
+
+	start, end := location, location+1
+	sideToRemove := -1
+	var sideToEdit *Side
+	for i, side := range sides {
+		if side == nil {
+			continue
+		}
+		if side.orientation != orientation || side.sidePresence != sidePresence {
+			continue
+		}
+		if side.end == start {
+			start = min(location, side.start)
+			if sideToEdit != nil {
+				sideToRemove = i - 1
+			}
+			sideToEdit = side
+		}
+		if side.start == end {
+			end = max(location, side.end)
+
+			if sideToEdit == nil {
+				sideToEdit = side
+			} else {
+				sideToRemove = i
+			}
+		}
+	}
+
+	if sideToRemove != -1 {
+		sides = slices.Delete(sides, sideToRemove, sideToRemove+1)
+		store[sideHeight] = sides
+	}
+
+	if sideToEdit != nil {
+		sideToEdit.start = start
+		sideToEdit.end = end
+	} else {
+		newSide := Side{
+			start:        start,
+			end:          end,
+			orientation:  orientation,
+			sidePresence: sidePresence,
+		}
+
+		sides = append(sides, &newSide)
+		store[sideHeight] = sides
+	}
 }

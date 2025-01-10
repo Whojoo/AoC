@@ -5,16 +5,10 @@ namespace Dotnet;
 
 public static class Day7
 {
-    private static readonly Dictionary<int, List<List<IOperation>>> OperationOptionsCache = [];
-    private static readonly ConcurrentDictionary<int, List<List<IOperation>>> OperationOptionsCache2 = [];
-
     public static void Run()
     {
         var totalStartTime = Stopwatch.GetTimestamp();
-        var input = InputReader
-            .ReadInput("day7.txt")
-            .Select(MapToEquation)
-            .ToList();
+        var input = InputReader.ReadInput("day7.txt");
 
         var startTime = Stopwatch.GetTimestamp();
         var part1 = CalculatePart1(input);
@@ -33,39 +27,74 @@ public static class Day7
         Console.WriteLine();
     }
 
-    public static long CalculatePart1(List<Equation> input) =>
-        input
-            .Where(IsValidEquation)
-            .Sum(equation => equation.TestValue);
-
-    public static long CalculatePart2(List<Equation> input) => 
-        input
-            .AsParallel()
-            .Where(IsValidEquation2)
-            .Sum(equation => equation.TestValue);
-
-    private static bool IsValidEquation(Equation equation) =>
-        GetOperationOptions(equation.Numbers.Count)
-            .Any(operations => IsValidEquationForOperations(equation, operations));
-    
-    private static bool IsValidEquation2(Equation equation) =>
-        GetOperationOptions2(equation.Numbers.Count)
-            .AsParallel()
-            .Any(operations => IsValidEquationForOperations(equation, operations));
-
-    private static bool IsValidEquationForOperations(Equation equation, List<IOperation> operations)
+    public static long CalculatePart1(List<string> input)
     {
-        var number = equation.Numbers[0];
-        for (var i = 1; i < equation.Numbers.Count; i++)
-        {
-            var operation = operations[i - 1];
-            number = operation.Solve(number, equation.Numbers[i]);
-        }
+        List<IOperation> operations =
+        [
+            new AddOperation(),
+            new MultiplyOperation()
+        ];
 
-        return number == equation.TestValue;
+        return input
+            .Select(MapToEquation)
+            .Where(equation => IsValidEquationForOperations(equation, operations))
+            .Sum(equation => equation.TestValue);
     }
 
-    public static Equation MapToEquation(string input)
+    public static long CalculatePart2(List<string> input)
+    {
+        List<IOperation> operations =
+        [
+            new AddOperation(),
+            new MultiplyOperation(),
+            new ConcatenateOperation()
+        ];
+
+        return input
+            .Select(MapToEquation)
+            .Where(equation => IsValidEquationForOperations(equation, operations))
+            .Sum(equation => equation.TestValue);
+    }
+    
+    private static bool IsValidEquationForOperations(Equation equation, List<IOperation> operations)
+    {
+        var operationNodeStack = new Stack<OperationNode>();
+        operationNodeStack.Push(new OperationNode(equation.TestValue, equation.Numbers));
+        var firstNumber = equation.Numbers[0];
+
+        do
+        {
+            var node = operationNodeStack.Pop();
+            var numbers = node.NumbersLeft.ToList();
+            var nextNumber = numbers.Last();
+
+            var nextTotals = operations
+                .Where(operation => operation.IsApplicable(node.CurrentTotal, nextNumber))
+                .Select(operation => operation.PerformOperation(node.CurrentTotal, nextNumber))
+                .ToArray();
+
+            switch (numbers.Count)
+            {
+                case 2 when nextTotals.Any(number => number == firstNumber):
+                    return true;
+                case 2:
+                    continue;
+            }
+
+            var nextNumbers = numbers.Take(numbers.Count - 1);
+            foreach (var total in nextTotals)
+            {
+                // Multiple is accepted for the chance of not having to create a new list
+                // ReSharper disable once PossibleMultipleEnumeration
+                operationNodeStack.Push(new OperationNode(total, nextNumbers));
+            }
+
+        } while (operationNodeStack.Count > 0);
+
+        return false;
+    }
+
+    private static Equation MapToEquation(string input)
     {
         var splitInput = input.Split(": ");
         var (testString, numbers) = (splitInput[0], splitInput[1]);
@@ -73,51 +102,6 @@ public static class Day7
         return new Equation(
             long.Parse(testString),
             numbers.Split(" ").Select(long.Parse).ToList());
-    }
-
-    private static List<List<IOperation>> GetOperationOptions(int amountOfNumbers)
-    {
-        if (OperationOptionsCache.TryGetValue(amountOfNumbers, out var result))
-        {
-            return result;
-        }
-
-        var (add, multiply) = (new AddOperation(), new MultiplyOperation());
-        List<List<IOperation>> operations = [[add], [multiply]];
-
-        for (var i = 3; i <= amountOfNumbers; i++)
-        {
-            var newOperations = new List<List<IOperation>>(operations.Count * 2);
-            newOperations.AddRange(operations.Select(operation => (List<IOperation>) [.. operation, add]));
-            newOperations.AddRange(operations.Select(operation => (List<IOperation>) [.. operation, multiply]));
-            operations = newOperations;
-        }
-
-        OperationOptionsCache[amountOfNumbers] = operations;
-        return operations;
-    }
-
-    private static List<List<IOperation>> GetOperationOptions2(int amountOfNumbers)
-    {
-        if (OperationOptionsCache2.TryGetValue(amountOfNumbers, out var result))
-        {
-            return result;
-        }
-
-        var (add, multiply, concatenate) = (new AddOperation(), new MultiplyOperation(), new ConcatenateOperation());
-        List<List<IOperation>> operations = [[add], [multiply], [concatenate]];
-
-        for (var i = 3; i <= amountOfNumbers; i++)
-        {
-            var newOperations = new List<List<IOperation>>();
-            newOperations.AddRange(operations.Select(operation => (List<IOperation>) [.. operation, add]));
-            newOperations.AddRange(operations.Select(operation => (List<IOperation>) [.. operation, multiply]));
-            newOperations.AddRange(operations.Select(operation => (List<IOperation>) [.. operation, concatenate]));
-            operations = newOperations;
-        }
-
-        OperationOptionsCache2[amountOfNumbers] = operations;
-        return operations;
     }
 
     public class Equation(long testValue, List<long> numbers)
@@ -128,27 +112,49 @@ public static class Day7
 
     public interface IOperation
     {
-        long Solve(long left, long right);
+        bool IsApplicable(long currentTotal, long nextNumber);
+        long PerformOperation(long currentTotal, long nextNumber);
     }
 
     public class AddOperation : IOperation
     {
-        public long Solve(long left, long right) => left + right;
+        public bool IsApplicable(long currentTotal, long nextNumber) => currentTotal >= nextNumber;
+        public long PerformOperation(long currentTotal, long nextNumber) => currentTotal - nextNumber;
     }
 
     public class MultiplyOperation : IOperation
     {
-        public long Solve(long left, long right) => left * right;
+        public bool IsApplicable(long currentTotal, long nextNumber) => currentTotal % nextNumber == 0;
+        public long PerformOperation(long currentTotal, long nextNumber) => currentTotal / nextNumber;
     }
 
     public class ConcatenateOperation : IOperation
     {
-        public long Solve(long left, long right)
+        public bool IsApplicable(long currentTotal, long nextNumber)
         {
-            var multiplier = 10;
-            while (multiplier <= right) multiplier *= 10;
-            
-            return left * multiplier + right;
+            var comparisonNumberFor = GetComparisonNumberFor(nextNumber);
+            var totalWithoutNextNumber = currentTotal - nextNumber;
+            return totalWithoutNextNumber > 0 && totalWithoutNextNumber % comparisonNumberFor == 0;
         }
+
+        public long PerformOperation(long currentTotal, long nextNumber)
+        {
+            var comparisonNumberFor = GetComparisonNumberFor(nextNumber);
+            var totalWithoutNextNumber = currentTotal - nextNumber;
+            return totalWithoutNextNumber / comparisonNumberFor;
+        }
+
+        private static int GetComparisonNumberFor(long nextNumber)
+        {
+            var comparison = 10;
+            while (comparison <= nextNumber) comparison *= 10;
+            return comparison;
+        }
+    }
+
+    public class OperationNode(long currentTotal, IEnumerable<long> numbersLeft)
+    {
+        public long CurrentTotal { get; } = currentTotal;
+        public IEnumerable<long> NumbersLeft { get; } = numbersLeft;
     }
 }

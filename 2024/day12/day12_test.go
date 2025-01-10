@@ -26,6 +26,10 @@ func TestAssignment_Part1(t *testing.T) {
 			inputPath: "../exampleInput/day12_2.txt",
 			want:      772,
 		},
+		"Reddit 2": {
+			inputPath: "../exampleInput/day12_reddit2.txt",
+			want:      1202,
+		},
 	}
 
 	for name, test := range tests {
@@ -74,6 +78,18 @@ func TestAssignment_Part2(t *testing.T) {
 			inputPath: "../exampleInput/day12_4.txt",
 			want:      368,
 		},
+		"Reddit 1": {
+			inputPath: "../exampleInput/day12_reddit1.txt",
+			want:      160,
+		},
+		"Reddit 2": {
+			inputPath: "../exampleInput/day12_reddit2.txt",
+			want:      452,
+		},
+		"Reddit 3": {
+			inputPath: "../exampleInput/day12_reddit3.txt",
+			want:      472,
+		},
 	}
 
 	for name, test := range tests {
@@ -108,6 +124,22 @@ func BenchmarkAssignment_Part1(b *testing.B) {
 		b.StartTimer()
 
 		local = assignment.Part1(input)
+	}
+
+	global = local
+}
+
+func BenchmarkAssignment_Part2(b *testing.B) {
+	var local int
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		b.StopTimer()
+		input := shared.ReadInput("../input/day12.txt")
+		assignment := day12.NewAssignment()
+		b.StartTimer()
+
+		local = assignment.Part2(input)
 	}
 
 	global = local

@@ -31,37 +31,22 @@ func main() {
 		day11.NewAssignment(),
 		day12.NewAssignment(),
 	}
-	responseChannels := make([]chan string, len(assignments))
 
 	for i, assignment := range assignments {
-		responseChannels[i] = make(chan string)
+		input := shared.ReadInput("input/" + assignment.FileName())
 
-		go func() {
-			input := shared.ReadInput("input/" + assignment.FileName())
+		startTime := time.Now()
+		part1 := assignment.Part1(input)
+		part1Elapsed := time.Since(startTime)
 
-			startTime := time.Now()
-			part1 := assignment.Part1(input)
-			part1Elapsed := time.Since(startTime)
+		startTime = time.Now()
+		part2 := assignment.Part2(input)
+		part2Elapsed := time.Since(startTime)
 
-			startTime = time.Now()
-			part2 := assignment.Part2(input)
-			part2Elapsed := time.Since(startTime)
-
-			c := responseChannels[i]
-			c <- getDay(i)
-			c <- fmt.Sprintf("Part1: %d in %s", part1, part1Elapsed)
-			c <- fmt.Sprintf("Part2: %d in %s", part2, part2Elapsed)
-			c <- fmt.Sprintf("Total time: %s", part1Elapsed+part2Elapsed)
-
-			close(c)
-		}()
-	}
-
-	for _, responseChannel := range responseChannels {
-		for response := range responseChannel {
-			fmt.Println(response)
-		}
-		fmt.Println()
+		fmt.Println(getDay(i))
+		fmt.Printf("Part1: %d in %s\n", part1, part1Elapsed)
+		fmt.Printf("Part2: %d in %s\n", part2, part2Elapsed)
+		fmt.Printf("Total time: %s\n\n", part1Elapsed+part2Elapsed)
 	}
 }
 

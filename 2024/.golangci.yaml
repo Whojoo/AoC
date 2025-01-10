@@ -31,6 +31,7 @@ linters-settings:
       - condition
       - return
     ignored-numbers:
+      - '-1'
       - '0'
       - '1'
       - '2'

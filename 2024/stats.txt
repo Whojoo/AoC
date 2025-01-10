@@ -1,0 +1,218 @@
+?   	github.com/Whojoo/AoC/2024	[no test files]
+PASS
+ok  	github.com/Whojoo/AoC/2024/day1	0.279s
+PASS
+ok  	github.com/Whojoo/AoC/2024/day10	0.227s
+goos: darwin
+goarch: arm64
+pkg: github.com/Whojoo/AoC/2024/day11
+cpu: Apple M3 Pro
+BenchmarkAssignment_Part1-12    	    6142	    196981 ns/op	  221828 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6044	    193926 ns/op	  221822 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6096	    193417 ns/op	  221869 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6084	    193528 ns/op	  221828 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6152	    195951 ns/op	  221832 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6110	    193348 ns/op	  221829 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6080	    193427 ns/op	  221881 B/op	    2636 allocs/op
+BenchmarkAssignment_Part1-12    	    6054	    193632 ns/op	  221844 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6066	    196519 ns/op	  221827 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6034	    194862 ns/op	  221847 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6024	    196323 ns/op	  221856 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6098	    193729 ns/op	  221862 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6097	    193450 ns/op	  221869 B/op	    2636 allocs/op
+BenchmarkAssignment_Part1-12    	    6037	    195744 ns/op	  221841 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6066	    193387 ns/op	  221871 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6085	    193740 ns/op	  221850 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6066	    193797 ns/op	  221830 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6081	    196495 ns/op	  221855 B/op	    2635 allocs/op
+BenchmarkAssignment_Part1-12    	    6069	    194860 ns/op	  221878 B/op	    2636 allocs/op
+BenchmarkAssignment_Part1-12    	    6100	    193690 ns/op	  221859 B/op	    2635 allocs/op
+BenchmarkAssignment_Part2-12    	     126	   9160841 ns/op	10531514 B/op	  115528 allocs/op
+BenchmarkAssignment_Part2-12    	     129	   9121923 ns/op	10531284 B/op	  115527 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9375231 ns/op	10529912 B/op	  115516 allocs/op
+BenchmarkAssignment_Part2-12    	     122	   9852375 ns/op	10530869 B/op	  115524 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9123135 ns/op	10530434 B/op	  115520 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9246145 ns/op	10530050 B/op	  115515 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9133665 ns/op	10530373 B/op	  115518 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9122786 ns/op	10530670 B/op	  115523 allocs/op
+BenchmarkAssignment_Part2-12    	     128	   9559844 ns/op	10531200 B/op	  115526 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9131076 ns/op	10529995 B/op	  115515 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9233402 ns/op	10529824 B/op	  115515 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9872142 ns/op	10530413 B/op	  115517 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9129555 ns/op	10530260 B/op	  115517 allocs/op
+BenchmarkAssignment_Part2-12    	     128	   9141873 ns/op	10530466 B/op	  115521 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9132735 ns/op	10530755 B/op	  115523 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9255796 ns/op	10529791 B/op	  115513 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9140583 ns/op	10531360 B/op	  115528 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9291459 ns/op	10530416 B/op	  115521 allocs/op
+BenchmarkAssignment_Part2-12    	     127	   9160350 ns/op	10529696 B/op	  115516 allocs/op
+BenchmarkAssignment_Part2-12    	     130	   9134707 ns/op	10530565 B/op	  115521 allocs/op
+PASS
+ok  	github.com/Whojoo/AoC/2024/day11	67.555s
+goos: darwin
+goarch: arm64
+pkg: github.com/Whojoo/AoC/2024/day12
+cpu: Apple M3 Pro
+BenchmarkAssignment_Part1-12    	     322	   3568670 ns/op	 2913810 B/op	    6784 allocs/op
+BenchmarkAssignment_Part1-12    	     338	   3531608 ns/op	 2914137 B/op	    6786 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3523800 ns/op	 2913923 B/op	    6785 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3571422 ns/op	 2914391 B/op	    6788 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3519138 ns/op	 2914203 B/op	    6787 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3514705 ns/op	 2914063 B/op	    6786 allocs/op
+BenchmarkAssignment_Part1-12    	     340	   3570057 ns/op	 2913987 B/op	    6785 allocs/op
+BenchmarkAssignment_Part1-12    	     340	   3530728 ns/op	 2914030 B/op	    6785 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3524278 ns/op	 2914020 B/op	    6785 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3529831 ns/op	 2913964 B/op	    6785 allocs/op
+BenchmarkAssignment_Part1-12    	     325	   3522912 ns/op	 2914120 B/op	    6786 allocs/op
+BenchmarkAssignment_Part1-12    	     338	   3536166 ns/op	 2914126 B/op	    6786 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3533321 ns/op	 2913948 B/op	    6785 allocs/op
+BenchmarkAssignment_Part1-12    	     338	   3586315 ns/op	 2913977 B/op	    6785 allocs/op
+BenchmarkAssignment_Part1-12    	     340	   3520758 ns/op	 2913858 B/op	    6784 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3526654 ns/op	 2913780 B/op	    6783 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3577311 ns/op	 2913769 B/op	    6784 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3525091 ns/op	 2914078 B/op	    6786 allocs/op
+BenchmarkAssignment_Part1-12    	     339	   3530838 ns/op	 2913649 B/op	    6783 allocs/op
+BenchmarkAssignment_Part1-12    	     340	   3573329 ns/op	 2913896 B/op	    6785 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5169374 ns/op	 3996841 B/op	   29544 allocs/op
+BenchmarkAssignment_Part2-12    	     232	   5154970 ns/op	 3996984 B/op	   29544 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5387376 ns/op	 3997005 B/op	   29545 allocs/op
+BenchmarkAssignment_Part2-12    	     223	   5257308 ns/op	 3996942 B/op	   29544 allocs/op
+BenchmarkAssignment_Part2-12    	     232	   5163805 ns/op	 3996867 B/op	   29545 allocs/op
+BenchmarkAssignment_Part2-12    	     232	   5406311 ns/op	 3997056 B/op	   29545 allocs/op
+BenchmarkAssignment_Part2-12    	     230	   5175538 ns/op	 3996526 B/op	   29542 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5162985 ns/op	 3997111 B/op	   29545 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5258545 ns/op	 3996539 B/op	   29543 allocs/op
+BenchmarkAssignment_Part2-12    	     229	   5165921 ns/op	 3996915 B/op	   29543 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5186471 ns/op	 3997005 B/op	   29544 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5231723 ns/op	 3996900 B/op	   29543 allocs/op
+BenchmarkAssignment_Part2-12    	     229	   5532119 ns/op	 3997141 B/op	   29545 allocs/op
+BenchmarkAssignment_Part2-12    	     213	   5433361 ns/op	 3996937 B/op	   29544 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5241824 ns/op	 3996894 B/op	   29544 allocs/op
+BenchmarkAssignment_Part2-12    	     232	   5172302 ns/op	 3996796 B/op	   29543 allocs/op
+BenchmarkAssignment_Part2-12    	     230	   5167991 ns/op	 3996918 B/op	   29545 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5251230 ns/op	 3997296 B/op	   29546 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5174637 ns/op	 3997028 B/op	   29546 allocs/op
+BenchmarkAssignment_Part2-12    	     231	   5170984 ns/op	 3997019 B/op	   29545 allocs/op
+PASS
+ok  	github.com/Whojoo/AoC/2024/day12	66.891s
+PASS
+ok  	github.com/Whojoo/AoC/2024/day2	0.285s
+PASS
+ok  	github.com/Whojoo/AoC/2024/day3	0.233s
+PASS
+ok  	github.com/Whojoo/AoC/2024/day4	0.225s
+goos: darwin
+goarch: arm64
+pkg: github.com/Whojoo/AoC/2024/day6
+cpu: Apple M3 Pro
+BenchmarkAssignment_Part1-12    	    2480	    482255 ns/op	 2577688 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2472	    478873 ns/op	 2577688 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2473	    481653 ns/op	 2577689 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2457	    483957 ns/op	 2577689 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2455	    486258 ns/op	 2577690 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2504	    480000 ns/op	 2577690 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2469	    483361 ns/op	 2577688 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2467	    489594 ns/op	 2577689 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2468	    479203 ns/op	 2577688 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2457	    481790 ns/op	 2577689 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2474	    483845 ns/op	 2577689 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2473	    485828 ns/op	 2577688 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2468	    484109 ns/op	 2577688 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2480	    478939 ns/op	 2577688 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2538	    477876 ns/op	 2577689 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2496	    491250 ns/op	 2577690 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2472	    483035 ns/op	 2577689 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2462	    480027 ns/op	 2577689 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2463	    482564 ns/op	 2577688 B/op	    6150 allocs/op
+BenchmarkAssignment_Part1-12    	    2462	    488244 ns/op	 2577689 B/op	    6150 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 396776070 ns/op	6007865952 B/op	14880493 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 397239361 ns/op	6007802560 B/op	14879833 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 388480389 ns/op	6007847040 B/op	14880296 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 395272208 ns/op	6007841760 B/op	14880241 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 388052570 ns/op	6007846272 B/op	14880288 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 390655944 ns/op	6007819744 B/op	14880012 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 376832736 ns/op	6007859552 B/op	14880427 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 385326597 ns/op	6007824160 B/op	14880058 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 387367278 ns/op	6007826528 B/op	14880083 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 402279403 ns/op	6007860416 B/op	14880436 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 396114486 ns/op	6007828448 B/op	14880103 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 392156375 ns/op	6007818336 B/op	14879997 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 389538208 ns/op	6007817792 B/op	14879992 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 404214111 ns/op	6007921312 B/op	14881070 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 385583486 ns/op	6007847040 B/op	14880296 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 405210180 ns/op	6007857568 B/op	14880406 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 403778833 ns/op	6007871968 B/op	14880556 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 407467597 ns/op	6007870560 B/op	14880541 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 378286264 ns/op	6007858144 B/op	14880412 allocs/op
+BenchmarkAssignment_Part2-12    	       3	 397389528 ns/op	6007850336 B/op	14880331 allocs/op
+PASS
+ok  	github.com/Whojoo/AoC/2024/day6	73.645s
+PASS
+ok  	github.com/Whojoo/AoC/2024/day8	0.288s
+goos: darwin
+goarch: arm64
+pkg: github.com/Whojoo/AoC/2024/day9
+cpu: Apple M3 Pro
+BenchmarkAssignment_Part2-12          	     754	   1346440 ns/op	 5619069 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     895	   1410201 ns/op	 5619069 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     830	   1450648 ns/op	 5619069 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     830	   1415729 ns/op	 5619066 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     876	   1369926 ns/op	 5619068 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     878	   1354026 ns/op	 5619063 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     883	   1372060 ns/op	 5619067 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     889	   1372733 ns/op	 5619064 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     879	   1344547 ns/op	 5619062 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     902	   1343113 ns/op	 5619062 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     882	   1362769 ns/op	 5619070 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     886	   1336334 ns/op	 5619068 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     871	   1336303 ns/op	 5619064 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     894	   1338820 ns/op	 5619065 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     873	   1354414 ns/op	 5619071 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     890	   1347472 ns/op	 5619066 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     880	   1342317 ns/op	 5619064 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     883	   1347018 ns/op	 5619068 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     885	   1374103 ns/op	 5619056 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2-12          	     898	   1315818 ns/op	 5619070 B/op	   14373 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     319	   3714593 ns/op	11354096 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     320	   3792762 ns/op	11354092 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     319	   3723502 ns/op	11354096 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     320	   3722526 ns/op	11354092 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     320	   3763618 ns/op	11354096 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     308	   3750641 ns/op	11354097 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     319	   3729508 ns/op	11354104 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     320	   3727328 ns/op	11354105 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     319	   3781844 ns/op	11354095 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     321	   3737084 ns/op	11354104 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     320	   3721883 ns/op	11354105 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     324	   3768039 ns/op	11354090 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     320	   3742372 ns/op	11354098 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     319	   3751496 ns/op	11354097 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     319	   3785011 ns/op	11354103 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     324	   3731248 ns/op	11354091 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     322	   3719757 ns/op	11354086 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     319	   3722994 ns/op	11354095 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     307	   3717367 ns/op	11354096 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Bonus-12    	     325	   3720438 ns/op	11354091 B/op	   44003 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10628762 ns/op	56910910 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10660797 ns/op	56910900 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10768498 ns/op	56910920 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10647287 ns/op	56910917 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10659418 ns/op	56910924 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10601739 ns/op	56910912 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10748442 ns/op	56910913 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10649705 ns/op	56910908 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	      99	  10587417 ns/op	56910902 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10585872 ns/op	56910908 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10625871 ns/op	56910917 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10781068 ns/op	56910913 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10626068 ns/op	56910926 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10595124 ns/op	56910926 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10631876 ns/op	56910913 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10582575 ns/op	56910923 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10785660 ns/op	56910911 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10631706 ns/op	56910892 B/op	  131828 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10602590 ns/op	56910902 B/op	  131829 allocs/op
+BenchmarkAssignment_Part2_Evil-12     	     100	  10637390 ns/op	56910918 B/op	  131829 allocs/op
+PASS
+ok  	github.com/Whojoo/AoC/2024/day9	79.815s
+?   	github.com/Whojoo/AoC/2024/shared	[no test files]

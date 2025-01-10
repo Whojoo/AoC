@@ -19,10 +19,11 @@ func Filter[K any](objs []K, f func(K) bool) []K {
 	return result
 }
 
-func Sum[K any](objs []K, f func(K) int) int {
-	sum := 0
+func First[K any](objs []K, f func(K) bool) (result *K, found bool) {
 	for _, obj := range objs {
-		sum += f(obj)
+		if f(obj) {
+			return &obj, true
+		}
 	}
-	return sum
+	return nil, false
 }
