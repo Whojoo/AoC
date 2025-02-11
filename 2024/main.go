@@ -8,11 +8,13 @@ import (
 	"github.com/Whojoo/AoC/2024/day10"
 	"github.com/Whojoo/AoC/2024/day11"
 	"github.com/Whojoo/AoC/2024/day12"
+	"github.com/Whojoo/AoC/2024/day13"
 	"github.com/Whojoo/AoC/2024/day2"
 	"github.com/Whojoo/AoC/2024/day3"
 	"github.com/Whojoo/AoC/2024/day4"
 	"github.com/Whojoo/AoC/2024/day8"
 	"github.com/Whojoo/AoC/2024/day9"
+
 	"github.com/Whojoo/AoC/2024/shared"
 
 	"github.com/Whojoo/AoC/2024/day6"
@@ -30,6 +32,7 @@ func main() {
 		day10.NewAssignment(),
 		day11.NewAssignment(),
 		day12.NewAssignment(),
+		day13.NewAssignment(),
 	}
 
 	for i, assignment := range assignments {
