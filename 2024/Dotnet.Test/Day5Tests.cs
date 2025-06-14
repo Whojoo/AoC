@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Xunit;
+﻿using Shouldly;
 
 namespace Dotnet.Test;
 
@@ -42,7 +41,7 @@ public class Day5Tests
         
         var result = Day5.CalculatePart1(input);
 
-        result.Should().Be(143);
+        result.ShouldBe(143);
     }
 
     [Fact]
@@ -82,6 +81,6 @@ public class Day5Tests
 
         var result = Day5.CalculatePart2(input);
 
-        result.Should().Be(123);
+        result.ShouldBe(123);
     }
 }

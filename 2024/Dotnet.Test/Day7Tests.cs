@@ -1,4 +1,4 @@
-using FluentAssertions;
+using Shouldly;
 
 namespace Dotnet.Test;
 
@@ -25,7 +25,7 @@ public class Day7Tests
         var result = Day7.CalculatePart1(rawInput);
 
         // Assert
-        result.Should().Be(3749);
+        result.ShouldBe(3749);
     }
     
     [Fact]
@@ -49,7 +49,7 @@ public class Day7Tests
         var result = Day7.CalculatePart1(rawInput);
 
         // Assert
-        result.Should().Be(3749);
+        result.ShouldBe(3749);
     }
     
     [Fact]
@@ -73,7 +73,7 @@ public class Day7Tests
         var result = Day7.CalculatePart2(rawInput);
 
         // Assert
-        result.Should().Be(11387);
+        result.ShouldBe(11387);
     }
     
     [Fact]
@@ -97,6 +97,6 @@ public class Day7Tests
         var result = Day7.CalculatePart2(rawInput);
 
         // Assert
-        result.Should().Be(11387);
+        result.ShouldBe(11387);
     }
 }
