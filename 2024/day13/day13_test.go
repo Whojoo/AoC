@@ -38,3 +38,35 @@ func TestAssignment_Part1(t *testing.T) {
 		})
 	}
 }
+
+func TestAssignment_Part2(t *testing.T) {
+	t.Parallel()
+
+	tests := map[string]struct {
+		inputPath string
+		want      int
+	}{
+		"Default example": {
+			inputPath: "../exampleInput/day13-2.txt",
+			want:      875318608908,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			// Arrange
+			input := shared.ReadInput(test.inputPath)
+			assignment := day13.Assignment{}
+
+			// Act
+			got := assignment.Part2(input)
+
+			// Assert
+			if got != test.want {
+				t.Errorf("Assignment.Part2() = %d, want %d", got, test.want)
+			}
+		})
+	}
+}

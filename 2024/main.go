@@ -38,6 +38,11 @@ func main() {
 	for i, assignment := range assignments {
 		input := shared.ReadInput("input/" + assignment.FileName())
 
+		if input[0][0] == 239 {
+			// Weird file read thing
+			input[0] = input[0][3:]
+		}
+
 		startTime := time.Now()
 		part1 := assignment.Part1(input)
 		part1Elapsed := time.Since(startTime)

@@ -1,7 +1,6 @@
 package day13
 
 import (
-	"fmt"
 	"math"
 	"regexp"
 	"strconv"
@@ -19,20 +18,43 @@ func (a Assignment) FileName() string {
 
 const (
 	maxButtonPresses = 100
+	part2Max         = math.MaxInt
+	buttonACost      = 3
+	buttonBCost      = 1
 )
 
 func (a Assignment) Part1(input []string) int {
 	games := getGames(input)
+	totalCost := 0
 
 	for _, game := range games {
-		fmt.Println(game)
+		solution, success := game.FindSolution(maxButtonPresses)
+		if !success {
+			continue
+		}
+
+		totalCost += solution.ButtonAPresses*buttonACost + solution.ButtonBPresses*buttonBCost
 	}
 
-	return len(games)
+	return totalCost
 }
 
 func (a Assignment) Part2(input []string) int {
-	return len(input)
+	games := getGames(input)
+	totalCost := 0
+	const prizeAddition = 10_000_000_000_000
+
+	for _, game := range games {
+		game.PrizeVector = Vector{x: game.PrizeVector.x + prizeAddition, y: game.PrizeVector.y + prizeAddition}
+		solution, success := game.FindSolution(part2Max)
+		if !success {
+			continue
+		}
+
+		totalCost += solution.ButtonAPresses*buttonACost + solution.ButtonBPresses*buttonBCost
+	}
+
+	return totalCost
 }
 
 type Game struct {
@@ -40,73 +62,40 @@ type Game struct {
 }
 
 type GameSolution struct {
-	DirectionVector                Vector
 	ButtonAPresses, ButtonBPresses int
 }
 
-func NewGameSolution(directionVector Vector, buttonAPresses, buttonBPresses int) GameSolution {
+func NewGameSolution(buttonAPresses, buttonBPresses int) GameSolution {
 	return GameSolution{
-		DirectionVector: directionVector,
-		ButtonAPresses:  buttonAPresses,
-		ButtonBPresses:  buttonBPresses,
+		ButtonAPresses: buttonAPresses,
+		ButtonBPresses: buttonBPresses,
 	}
 }
 
-func (game Game) FindSolution() (solution GameSolution, found bool) {
-	if !game.hasSolution() {
-		return solution, false
+func (game Game) FindSolution(maxPresses int) (solution GameSolution, found bool) {
+	// Cheated, but I do not understand this math and just wanted to move on
+	determinant := (game.ButtonAVector.x * game.ButtonBVector.y) - (game.ButtonAVector.y * game.ButtonBVector.x)
+
+	//  No way to reach the prize
+	if determinant == 0 {
+		return GameSolution{}, false
 	}
 
-	solution, found = game.findEarlySolution()
+	buttonAPresses := (game.ButtonBVector.y*game.PrizeVector.x - game.ButtonBVector.x*game.PrizeVector.y) / determinant
+	buttonBPresses := (game.ButtonAVector.x*game.PrizeVector.y - game.ButtonAVector.y*game.PrizeVector.x) / determinant
 
-	if found {
-		return solution, found
+	if buttonAPresses < 0 || buttonBPresses < 0 || math.Mod(buttonAPresses, 1) != 0 || math.Mod(buttonBPresses, 1) != 0 {
+		return GameSolution{}, false
 	}
 
-	var buttonAPressed, buttonBPressed int
-	currentVector := game.ButtonBVector
-	prizeDirection := game.PrizeVector.Direction()
-	aDirection, bDirection := game.ButtonAVector, game.ButtonBVector
+	exactButtonAPresses := int(math.Ceil(buttonAPresses))
+	exactButtonBPresses := int(math.Ceil(buttonBPresses))
 
-	left, right := &game.ButtonAVector, &game.ButtonBVector
-	fmt.Println(left, right)
-	if aDirection.Direction() < bDirection.Direction() {
-		left, right = right, left
-		fmt.Println(left, right)
+	if exactButtonAPresses > maxPresses || exactButtonBPresses > maxPresses {
+		return GameSolution{}, false
 	}
 
-	for currentDirection := currentVector.Direction(); currentDirection != prizeDirection &&
-		(buttonAPressed+buttonBPressed) <= maxButtonPresses; {
-	}
-
-	return GameSolution{}, true
-}
-
-func (game Game) findEarlySolution() (solution GameSolution, found bool) {
-	prizeDirection := game.PrizeVector.Direction()
-	aDirection, bDirection := game.ButtonAVector.Direction(), game.ButtonBVector.Direction()
-
-	if bDirection == prizeDirection {
-		solution = NewGameSolution(game.ButtonBVector, 0, 1)
-		return solution, true
-	}
-
-	if aDirection == prizeDirection {
-		solution = NewGameSolution(game.ButtonAVector, 1, 0)
-		return solution, true
-	}
-
-	return solution, false
-}
-
-func (game Game) hasSolution() bool {
-	prizeDirection := game.PrizeVector.Direction()
-	aDirection, bDirection := game.ButtonAVector.Direction(), game.ButtonBVector.Direction()
-
-	validWithALeft := aDirection >= prizeDirection && prizeDirection >= bDirection
-	validWithBLeft := bDirection >= prizeDirection && prizeDirection >= aDirection
-
-	return validWithALeft || validWithBLeft
+	return NewGameSolution(exactButtonAPresses, exactButtonBPresses), true
 }
 
 func getGames(input []string) []Game {
@@ -155,6 +144,10 @@ func (vector Vector) Length() float64 {
 
 func (vector Vector) Scale(scalar float64) Vector {
 	return Vector{vector.x * scalar, vector.y * scalar}
+}
+
+func (vector Vector) Reversed() Vector {
+	return vector.Scale(-1)
 }
 
 func (vector Vector) Direction() float64 {
