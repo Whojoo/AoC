@@ -28,3 +28,14 @@ func ReadInput(path string) (input []string) {
 
 	return input
 }
+
+func ReadInputWithWeirdTokenPrevention(path string) (input []string) {
+	input = ReadInput(path)
+
+	if input[0][0] == 239 {
+		// Weird file read thing
+		input[0] = input[0][3:]
+	}
+
+	return input
+}

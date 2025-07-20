@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/Whojoo/AoC/2024/day15"
 	"time"
 
 	"github.com/Whojoo/AoC/2024/day1"
@@ -33,15 +34,11 @@ func main() {
 		day11.NewAssignment(),
 		day12.NewAssignment(),
 		day13.NewAssignment(),
+		day15.NewAssignment(),
 	}
 
 	for i, assignment := range assignments {
-		input := shared.ReadInput("input/" + assignment.FileName())
-
-		if input[0][0] == 239 {
-			// Weird file read thing
-			input[0] = input[0][3:]
-		}
+		input := shared.ReadInputWithWeirdTokenPrevention("input/" + assignment.FileName())
 
 		startTime := time.Now()
 		part1 := assignment.Part1(input)
@@ -58,7 +55,7 @@ func main() {
 	}
 }
 
-var skippedDays = []int{5, 7}
+var skippedDays = []int{5, 7, 14}
 
 func getDay(index int) string {
 	day := index + 1
