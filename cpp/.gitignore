@@ -1,0 +1,113 @@
+﻿# C/C++ build artifacts
+*.o
+*.obj
+*.lo
+*.la
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+*.exp
+*.ilk
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debugging files
+*.pdb
+*.idb
+*.dSYM/
+*.dmp
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Dependency/metadata files
+*.d
+
+# Coverage data
+*.gcno
+*.gcda
+*.gcov
+*.profraw
+*.profdata
+
+# Sanitizer reports
+*.lsan.*
+*.asan.*
+*.tsan.*
+*.ubsan.*
+
+# Compiler/IDE caches
+*.cache
+.cache/
+.vscode/
+.idea/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CMakeUserPresets.json
+CMakeSettings.json
+CMakePresets.json
+_build/
+build/
+build-*/
+cmake-build-*/
+out/
+dist/
+
+# CLion/JetBrains
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/contentModel.xml
+
+# Ninja
+.ninja_deps
+.ninja_log
+
+# Visual Studio (if generated)
+.vs/
+Debug/
+Release/
+x64/
+x86/
+ipch/
+*.opendb
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+*~
+*.swp
+*.swo
+
+# Package managers / tools
+.vcpkg/
+vcpkg_installed/
+conan.lock
+conaninfo.txt
+conanbuildinfo.cmake
+.conan/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Project-specific
+/input/

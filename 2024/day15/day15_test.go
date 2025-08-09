@@ -41,3 +41,38 @@ func TestAssignment_Part1(t *testing.T) {
 		})
 	}
 }
+func TestAssignment_Part2(t *testing.T) {
+	t.Parallel()
+
+	tests := map[string]struct {
+		inputPath string
+		want      int
+	}{
+		"Default example": {
+			inputPath: "../exampleInput/day15-1.txt",
+			want:      9021,
+		},
+		"15-3": {
+			inputPath: "../exampleInput/day15-3.txt",
+			want:      9021,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			// Arrange
+			input := shared.ReadInputWithWeirdTokenPrevention(test.inputPath)
+			assignment := day15.Assignment{}
+
+			// Act
+			got := assignment.Part2(input)
+
+			// Assert
+			if got != test.want {
+				t.Errorf("Assignment.Part2() = %d, want %d", got, test.want)
+			}
+		})
+	}
+}
