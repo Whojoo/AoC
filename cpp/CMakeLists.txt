@@ -1,12 +1,19 @@
 ﻿cmake_minimum_required(VERSION 4.0)
-project(cpp)
+project(2015)
 
 set(CMAKE_CXX_STANDARD 26)
 
-add_executable(cpp
-        2015/src/day1.cpp
+add_executable(2015
+        2015/day1.cpp
         InputUtils.h
-        InputUtils.cpp)
+        InputUtils.cpp
+)
+
+add_executable(2015_2
+        2015/day2.cpp
+        InputUtils.h
+        InputUtils.cpp
+)
 
 include(FetchContent)
 FetchContent_Declare(

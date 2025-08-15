@@ -5,17 +5,15 @@
 #include "InputUtils.h"
 
 #include <fstream>
-#include <filesystem>
 
 std::vector<std::string> read_input_file(const unsigned int year, const std::string &filename) {
-    auto current_path = std::filesystem::current_path();
     const auto fullFileName = "../" + std::to_string(year) + "/input/" + filename;
     std::ifstream inputFile (fullFileName);
 
     std::string line;
     std::vector<std::string> lines;
     while (std::getline(inputFile, line)) {
-        // UTF-8 stuff, ignore first 3 characters
+        // UTF-8 stuff, ignore the first 3 characters
         if (line[0] == '\357') {
             line = line.substr(3);
         }
