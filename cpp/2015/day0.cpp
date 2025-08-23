@@ -28,7 +28,7 @@ std::vector<std::string> read_input_file(const unsigned int year, const std::str
 }
 
 int main() {
-    const auto input = read_input_file(2015, "day3.txt");
+    const auto input = read_input_file(2015, "day0.txt");
 
     std::cout << "Part 1: " << std::to_string(part_1(input)) << std::endl;
     std::cout << "Part 2: " << std::to_string(part_2(input)) << std::endl;

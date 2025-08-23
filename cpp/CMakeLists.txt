@@ -1,6 +1,9 @@
 ﻿cmake_minimum_required(VERSION 4.0)
 project(2015)
 
+include_directories(${CMAKE_SOURCE_DIR}/inc)
+link_directories(${CMAKE_SOURCE_DIR}/lib)
+
 set(CMAKE_CXX_STANDARD 26)
 
 add_executable(2015
@@ -15,6 +18,7 @@ add_executable(2015_2
         InputUtils.cpp
 )
 
+
 include(FetchContent)
 FetchContent_Declare(
         Catch2
@@ -24,7 +28,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 add_executable(tests
-        2015/tests/day1-test.cpp)
+        2015/tests/day1-test.cpp
+        2015/day4.cpp)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
