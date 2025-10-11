@@ -9,7 +9,9 @@ public static class Day8
     var lines = File.ReadAllLines("input/day8.txt");
 
     Console.WriteLine($"Part one: {PartOne(lines)}");
+    Console.WriteLine($"Part one v2: {PartOneV2(lines)}");
     Console.WriteLine($"Part two: {PartTwo(lines)}");
+    Console.WriteLine($"Part two v2: {PartTwoV2(lines)}");
   }
 
   public static int PartOne(string[] input)
@@ -23,7 +25,7 @@ public static class Day8
 
         var cheatBackslash = CountOccurrences(@"\\\", line);
         var counterCheatBackslash = CountOccurrences(@"\\\\", line);
-        
+
         var cheatHex = CountOccurrences(@"\\x", line);
         var counterCheatHex = CountOccurrences(@"\\\x", line);
 
@@ -39,9 +41,34 @@ public static class Day8
     return totalCharacters - totalInMemoryCharacters;
   }
 
+  public static int PartOneV2(string[] input) =>
+    input.Aggregate(0, (current, line) =>
+    {
+      var escapedCharacters = 0;
+      for (var i = 0; i < line.Length; i++)
+      {
+        if (line[i] != '\\')
+          continue;
+
+        switch (line[i + 1])
+        {
+          case '\"':
+          case '\\':
+            i++;
+            escapedCharacters++;
+            break;
+          case 'x':
+            i += 3;
+            escapedCharacters += 3;
+            break;
+        }
+      }
+
+      return current + escapedCharacters + 2;
+    });
+
   public static int PartTwo(string[] input) =>
-    input
-      .Select(line =>
+    input.Select(line =>
       {
         const int defaultIncrease = 2;
         var quotes = CountOccurrences("\"", line);
@@ -50,7 +77,18 @@ public static class Day8
         return defaultIncrease + quotes + backslashes;
       })
       .Sum();
-  
+
+  public static int PartTwoV2(string[] input) =>
+    input.Aggregate(0, (current, line) =>
+    {
+      const int defaultIncrease = 2;
+      var escapedCharacters = 0;
+      foreach (var character in line)
+        if (character is '\"' or '\\')
+          escapedCharacters++;
+
+      return defaultIncrease + escapedCharacters + current;
+    });
 
   private static int CountOccurrences(string search, string target)
   {
@@ -62,7 +100,7 @@ public static class Day8
       count++;
       index = target.IndexOf(search, index + 1, StringComparison.InvariantCulture);
     }
-    
+
     return count;
   }
 }
