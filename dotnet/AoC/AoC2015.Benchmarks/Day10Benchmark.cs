@@ -3,19 +3,19 @@
 namespace AoC2015.Benchmarks;
 
 [MemoryDiagnoser]
-public class Day0Benchmark
+public class Day10Benchmark
 {
-  private readonly string[] _input = File.ReadAllLines("../../../../../../../input/day0.txt");
+  private readonly string[] _input = File.ReadAllLines("../../../../../../../input/day10.txt");
   
   [Benchmark]
   public int BenchmarkPart1()
   {
-    return Day0.PartOne(_input);
+    return Day10.PartOne(_input);
   }
   
   [Benchmark]
   public int BenchmarkPart2()
   {
-    return Day0.PartTwo(_input);
+    return Day10.PartTwo(_input);
   }
 }
