@@ -9,23 +9,9 @@ public class Day11Tests
   {
     // Arrange
     // Act
-    var result = await Day11.PartOne([input]);
+    var result = await Day11.WithChannels([input]);
     
     // Assert
     Assert.Equal(expected, result);
-  }
-  
-  [Fact]
-  public void PartTwoTest()
-  {
-    // Arrange
-    var input = File.ReadAllLines("test-input/day11.txt");
-    const int expectedResult = 25;
-    
-    // Act
-    var result = Day11.PartTwo(input);
-    
-    // Assert
-    Assert.Equal(expectedResult, result);
   }
 }

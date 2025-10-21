@@ -9,21 +9,24 @@ public static partial class Day11
   {
     var lines = File.ReadAllLines("input/day11.txt");
 
-    var firstPassword = PartOne(lines).GetAwaiter().GetResult();
+    var firstPassword = WithChannels(lines).GetAwaiter().GetResult();
     Console.WriteLine($"Part one: {firstPassword}");
-    Console.WriteLine($"Part two: {PartOne([firstPassword]).GetAwaiter().GetResult()}");
+    Console.WriteLine($"Part two: {WithChannels([firstPassword]).GetAwaiter().GetResult()}");
+
+    var password = WithoutChannels(lines);
+    Console.WriteLine($"Part one: {password}");
+    Console.WriteLine($"Part two: {WithoutChannels([password])}");
   }
 
-  public static async Task<string> PartOne(string[] input)
+  public static async Task<string> WithChannels(string[] input)
   {
     var ctSource = new CancellationTokenSource();
-    const bool log = false;
     var passwordChannel = Channel.CreateBounded<string>(new BoundedChannelOptions(100) { FullMode = BoundedChannelFullMode.Wait });
     var resultChannel = Channel.CreateUnbounded<string>();
 
-    _ = Task.Run(async () => await GeneratePasswords(passwordChannel.Writer, input[0], log, ctSource.Token), ctSource.Token);
-    _ = Task.Run(async () => await ValidatePasswords(passwordChannel.Reader, resultChannel.Writer, log, ctSource.Token), ctSource.Token);
-    _ = Task.Run(async () => await ValidatePasswords(passwordChannel.Reader, resultChannel.Writer, log, ctSource.Token), ctSource.Token);
+    _ = Task.Run(async () => await GeneratePasswords(passwordChannel.Writer, input[0], ctSource.Token), ctSource.Token);
+    _ = Task.Run(async () => await ValidatePasswords(passwordChannel.Reader, resultChannel.Writer, ctSource.Token), ctSource.Token);
+    _ = Task.Run(async () => await ValidatePasswords(passwordChannel.Reader, resultChannel.Writer, ctSource.Token), ctSource.Token);
 
     var result = await resultChannel.Reader.ReadAsync(CancellationToken.None);
     await ctSource.CancelAsync();
@@ -31,71 +34,81 @@ public static partial class Day11
     return result;
   }
   
-  public static int PartTwo(string[] input)
+  public static string WithoutChannels(string[] input)
   {
-    return 0;
+    var password = input[0];
+
+    while (true)
+    {
+      password = GenerateNewPassword(password);
+      if (ValidatePassword(password))
+        break;
+    }
+
+    return password;
   }
 
-  private static async Task GeneratePasswords(ChannelWriter<string> outputChannel, string startingPassword, bool log, CancellationToken ct)
+  private static async Task GeneratePasswords(ChannelWriter<string> outputChannel, string startingPassword, CancellationToken ct)
   {
     var password = new string(startingPassword);
     while (!ct.IsCancellationRequested)
     {
-      var chars = password.ToList();
-      for (var i = chars.Count - 1; i >= 0; i--)
-      {
-        if (chars[i] == 'z')
-        {
-          chars[i] = 'a';
-        }
-        else
-        {
-          chars[i]++;
-          break;
-        }
-      }
-
-      password = string.Join(string.Empty, chars);
-      if (log)
-        Console.WriteLine($"Sending password {password}");
+      password = GenerateNewPassword(password);
       await outputChannel.WriteAsync(password, ct);
     }
+  }
+
+  private static string GenerateNewPassword(string password)
+  {
+    var chars = password.ToList();
+    for (var i = chars.Count - 1; i >= 0; i--)
+    {
+      if (chars[i] == 'z')
+      {
+        chars[i] = 'a';
+      }
+      else
+      {
+        chars[i]++;
+        break;
+      }
+    }
+
+    return string.Join(string.Empty, chars);
   }
 
   private static async Task ValidatePasswords(
     ChannelReader<string> inputChannel,
     ChannelWriter<string> outputChannel, 
-    bool log,
     CancellationToken ct)
   {
     await foreach (var password in inputChannel.ReadAllAsync(ct))
     {
-      if (log)
-        Console.WriteLine($"Processing password {password}");
-
-      if (ForbiddenCharacters().Match(password).Success)
-      {
-        if (log)
-          Console.WriteLine($"Password {password} has a forbidden character");
+      if (!ValidatePassword(password))
         continue;
-      }
-
-      if (!HasTwoDoubles(password))
-      {
-        if (log)
-          Console.WriteLine($"Password {password} does not have at least 2 doubles");
-        continue;
-      }
-
-      if (!HasTwoIncrements(password))
-      {
-        if (log)
-          Console.WriteLine($"Password {password} does not have at least 2 increments");
-        continue;
-      }
       
       await outputChannel.WriteAsync(password, CancellationToken.None);
     }
+  }
+
+  private static bool ValidatePassword(string password)
+  {
+    if (ForbiddenCharacters().Match(password).Success)
+    {
+      return false;
+    }
+
+    if (!HasTwoDoubles(password))
+    {
+      return false;
+    }
+
+    if (!HasTwoIncrements(password))
+    {
+      return false;
+    }
+
+    return true;
   }
 
   private static bool HasTwoDoubles(string password)
