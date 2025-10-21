@@ -9,6 +9,7 @@ public static class Day10
     var lines = File.ReadAllLines("input/day10.txt");
 
     Console.WriteLine($"Part one: {PartOne(lines)}");
+    Console.WriteLine($"Part one MoreBuilder: {PartOneMoreBuilder(lines)}");
     Console.WriteLine($"Part two: {PartTwo(lines)}");
   }
 
@@ -16,12 +17,17 @@ public static class Day10
   {
     return PerformLookAndSay(input[0], 40);
   }
+  
+  public static int PartOneMoreBuilder(string[] input)
+  {
+    return PerformLookAndSayMoreBuilder(input[0], 40);
+  }
 
   public static int PartTwo(string[] input)
   {
     return PerformLookAndSay(input[0], 50);
   }
-
+  
   private static int PerformLookAndSay(string input, int iterations)
   {
     var line = new string(input);
@@ -45,6 +51,34 @@ public static class Day10
       }
 
       line = newLine.ToString();
+    }
+    
+    return line.Length;      
+  }
+
+  private static int PerformLookAndSayMoreBuilder(string input, int iterations)
+  {
+    var line = new string(input);
+
+    for (int i = 0; i < iterations; i++)
+    {
+      var lineBuilder = new StringBuilder(line.Length * 2);
+      for (int j = 0; j < line.Length;)
+      {
+        var character = line[j];
+        var counter = 1;
+
+        while (j + counter < line.Length && line[j + counter] == character)
+        {
+          counter++;
+        }
+
+        lineBuilder.Append(counter).Append(character);
+        j += counter;
+      }
+
+      line = lineBuilder.ToString();
+      lineBuilder.Clear();
     }
     
     return line.Length;      

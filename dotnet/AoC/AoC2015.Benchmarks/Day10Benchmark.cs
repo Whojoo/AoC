@@ -14,8 +14,8 @@ public class Day10Benchmark
   }
   
   [Benchmark]
-  public int BenchmarkPart2()
+  public int BenchmarkPart1MoreBuilder()
   {
-    return Day10.PartTwo(_input);
+    return Day10.PartOneMoreBuilder(_input);
   }
 }
