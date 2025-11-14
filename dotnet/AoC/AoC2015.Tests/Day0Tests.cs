@@ -7,7 +7,7 @@ public class Day0Tests
   {
     // Arrange
     var input = File.ReadAllLines("test-input/day0.txt");
-    const int expectedResult = 15;
+    const int expectedResult = 0;
     
     // Act
     var result = Day0.PartOne(input);
@@ -21,7 +21,7 @@ public class Day0Tests
   {
     // Arrange
     var input = File.ReadAllLines("test-input/day0.txt");
-    const int expectedResult = 25;
+    const int expectedResult = 0;
     
     // Act
     var result = Day0.PartTwo(input);

@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{3E3B8123-5AA2-4ECC-8815-AD806A10DDF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{69DD8711-4FBA-4004-8CD0-636D5369BA5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69DD8711-4FBA-4004-8CD0-636D5369BA5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69DD8711-4FBA-4004-8CD0-636D5369BA5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E3B8123-5AA2-4ECC-8815-AD806A10DDF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E3B8123-5AA2-4ECC-8815-AD806A10DDF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E3B8123-5AA2-4ECC-8815-AD806A10DDF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E3B8123-5AA2-4ECC-8815-AD806A10DDF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{66B43E17-73B5-43E5-9F2F-6A9BE700FCB2} = {E617AEE6-C735-41A0-9A8F-C668A800A59B}
