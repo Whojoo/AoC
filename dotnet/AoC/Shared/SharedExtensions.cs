@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace Shared;
 
@@ -15,5 +16,10 @@ public static class SharedExtensions
       val = value;
       return value;
     }
+  }
+
+  extension(Group group)
+  {
+    public int IntValue() => int.Parse(group.Value);
   }
 }
