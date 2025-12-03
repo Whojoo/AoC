@@ -1,32 +1,34 @@
-﻿namespace AoC2015.Tests;
+﻿using Shared;
+
+namespace AoC2015.Tests;
 
 public class Day0Tests
 {
-  [Fact]
-  public void PartOneTest()
+  [Test]
+  public async Task PartOneTest()
   {
     // Arrange
-    var input = File.ReadAllLines("test-input/day0.txt");
+    var input = await InputReader.ReadTestInputAsync(2015, 0);
     const int expectedResult = 0;
     
     // Act
     var result = Day0.PartOne(input);
     
     // Assert
-    Assert.Equal(expectedResult, result);
+    await Assert.That(result).IsEqualTo(expectedResult);
   }
   
-  [Fact]
-  public void PartTwoTest()
+  [Test]
+  public async Task PartTwoTest()
   {
     // Arrange
-    var input = File.ReadAllLines("test-input/day0.txt");
+    var input = await InputReader.ReadTestInputAsync(2015, 0);
     const int expectedResult = 0;
     
     // Act
     var result = Day0.PartTwo(input);
     
     // Assert
-    Assert.Equal(expectedResult, result);
+    await Assert.That(result).IsEqualTo(expectedResult);
   }
 }

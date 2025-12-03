@@ -5,7 +5,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AoC2015\AoC2015.csproj" />
+      <ProjectReference Include="..\AoC2025\AoC2025.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,70 +1,72 @@
-﻿namespace AoC2015.Tests;
+﻿using Shared;
+
+namespace AoC2015.Tests;
 
 public class Day8Tests
 {
-  [Fact]
-  public void PartOneTest()
+  [Test]
+  public async Task PartOneTest()
   {
     // Arrange
-    var input = File.ReadAllLines("test-input/day8.txt");
+    var input = await InputReader.ReadTestInputAsync(2015, 8);
     const int expectedResult = 15;
     
     // Act
     var result = Day8.PartOne(input);
     
     // Assert
-    Assert.Equal(expectedResult, result);
+    await Assert.That(result).IsEqualTo(expectedResult);
   }
 
-  [Theory]
-  [InlineData("\"\"", 2)]                         // ""
-  [InlineData("\"\\\"\"", 3)]                     // "\""
-  [InlineData("\"\\\\\"", 3)]                     // "\\"
-  [InlineData("\"\\x24\"", 5)]                    // "\x24"
-  [InlineData("\"ecn\\x50ooprbstnq\"", 5)]        // "ecn\x50ooprbstnq"
+  [Test]
+  [Arguments("\"\"", 2)]                         // ""
+  [Arguments("\"\\\"\"", 3)]                     // "\""
+  [Arguments("\"\\\\\"", 3)]                     // "\\"
+  [Arguments("\"\\x24\"", 5)]                    // "\x24"
+  [Arguments("\"ecn\\x50ooprbstnq\"", 5)]        // "ecn\x50ooprbstnq"
   // Ignore the hex on \\x
-  [InlineData("\"x\\\"\\xcaj\\\\xwwvpdldz\"", 7)] // "x\"\xcaj\\xwwvpdldz"
+  [Arguments("\"x\\\"\\xcaj\\\\xwwvpdldz\"", 7)] // "x\"\xcaj\\xwwvpdldz"
   // Do not ignore hex on \\\x, but also do not double count the \\
-  [InlineData("\"fdan\\\\\\x9e\"", 6)]            // "fdan\\\x9e"
-  public void PartOneTestEscapes(string input, int expectedResult)
+  [Arguments("\"fdan\\\\\\x9e\"", 6)]            // "fdan\\\x9e"
+  public async Task PartOneTestEscapes(string input, int expectedResult)
   {
     // Arrange
     // Act
     var result = Day8.PartOne([input]);
 
     // Assert
-    Assert.Equal(expectedResult, result);
+    await Assert.That(result).IsEqualTo(expectedResult);
   }
   
-  [Fact]
-  public void PartTwoTest()
+  [Test]
+  public async Task PartTwoTest()
   {
     // Arrange
-    var input = File.ReadAllLines("test-input/day8.txt");
+    var input = await InputReader.ReadTestInputAsync(2015, 8);
     const int expectedResult = 25;
     
     // Act
     var result = Day8.PartTwo(input);
     
     // Assert
-    Assert.Equal(expectedResult, result);
+    await Assert.That(result).IsEqualTo(expectedResult);
   }
 
-  [Theory]
-  [InlineData("\"\"", 4)]                         // "" -> "\"\""
-  [InlineData("\"\\\"\"", 6)]                     // "\"" -> "\"\\\"\""
-  [InlineData("\"\\\\\"", 6)]                     // "\\" -> "\"\\\\\""
-  [InlineData("\"\\x24\"", 5)]                    // "\x24" -> "\"\\x24\""
-  // [InlineData("\"ecn\\x50ooprbstnq\"", 5)]        // "ecn\x50ooprbstnq"
-  // [InlineData("\"x\\\"\\xcaj\\\\xwwvpdldz\"", 7)] // "x\"\xcaj\\xwwvpdldz"
-  // [InlineData("\"fdan\\\\\\x9e\"", 6)]            // "fdan\\\x9e"
-  public void PartTwoTestSeparateTestInput(string input, int expectedResult)
+  [Test]
+  [Arguments("\"\"", 4)]                         // "" -> "\"\""
+  [Arguments("\"\\\"\"", 6)]                     // "\"" -> "\"\\\"\""
+  [Arguments("\"\\\\\"", 6)]                     // "\\" -> "\"\\\\\""
+  [Arguments("\"\\x24\"", 5)]                    // "\x24" -> "\"\\x24\""
+  // [Arguments("\"ecn\\x50ooprbstnq\"", 5)]        // "ecn\x50ooprbstnq"
+  // [Arguments("\"x\\\"\\xcaj\\\\xwwvpdldz\"", 7)] // "x\"\xcaj\\xwwvpdldz"
+  // [Arguments("\"fdan\\\\\\x9e\"", 6)]            // "fdan\\\x9e"
+  public async Task PartTwoTestSeparateTestInput(string input, int expectedResult)
   {
     // Arrange
     // Act
     var result = Day8.PartTwo([input]);
 
     // Assert
-    Assert.Equal(expectedResult, result);
+    await Assert.That(result).IsEqualTo(expectedResult);
   }
 }
