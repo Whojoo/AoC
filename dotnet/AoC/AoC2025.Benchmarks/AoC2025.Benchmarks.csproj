@@ -11,4 +11,8 @@
       <PackageReference Include="BenchmarkDotNet" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\AoC2025\AoC2025.csproj" />
+    </ItemGroup>
+
 </Project>

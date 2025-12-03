@@ -1,11 +1,13 @@
 ﻿using BenchmarkDotNet.Attributes;
 
+using Shared;
+
 namespace AoC2015.Benchmarks;
 
 [MemoryDiagnoser]
 public class Day15Benchmark
 {
-  private readonly string[] _input = File.ReadAllLines("../../../../../../../input/day15.txt");
+  private readonly string[] _input = InputReader.ReadChallengeInput(2015, 15);
   
   [Benchmark]
   public int BenchmarkPart1()

@@ -2,12 +2,12 @@
 
 using Shared;
 
-namespace AoC2015.Benchmarks;
+namespace AoC2025.Benchmarks;
 
 [MemoryDiagnoser]
 public class Day0Benchmark
 {
-  private readonly string[] _input = InputReader.ReadChallengeInput(2015, 0);
+  private readonly string[] _input = InputReader.ReadChallengeInput(2025, 0);
   
   [Benchmark]
   public int BenchmarkPart1()
