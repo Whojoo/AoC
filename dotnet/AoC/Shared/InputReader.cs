@@ -14,5 +14,5 @@ public static class InputReader
     ReadInputAsync(year, $"day{day}-{suffix}", "test-input");
 
   private static async Task<string[]> ReadInputAsync(int year, string fileName, string inputFolderName) =>
-    await File.ReadAllLinesAsync($"{InputPath}/AdventOfCode/{inputFolderName}/{year}/{fileName}.txt");
+    await File.ReadAllLinesAsync($"{InputPath}/Documents/AdventOfCode/{inputFolderName}/{year}/{fileName}.txt");
 }

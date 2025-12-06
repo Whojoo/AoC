@@ -1,10 +1,8 @@
-﻿using System.Text.RegularExpressions;
-
-using Shared;
+﻿using Shared;
 
 namespace AoC2025;
 
-public static partial class Day1
+public static class Day1
 {
   private const int StartingPosition = 50;
   private const int Top = 100;
@@ -21,12 +19,12 @@ public static partial class Day1
   {
     var amountOfZeros = 0;
     var currentPosition = StartingPosition;
+    const char leftCharacter = 'L';
 
     foreach (var line in input)
     {
-      var match = DirectionRegex().Match(line);
-      var turningAmount = match.Groups["amount"].IntValue();
-      if (match.Groups["direction"].Value == "L")
+      var turningAmount = int.Parse(line[1..]);
+      if (line[0] == leftCharacter) 
         turningAmount *= -1;
 
       currentPosition += turningAmount;
@@ -43,9 +41,9 @@ public static partial class Day1
     return input
       .SelectMany(x =>
       {
-        var match = DirectionRegex().Match(x);
-        var turningAmount = match.Groups["amount"].IntValue();
-        var direction = match.Groups["direction"].Value == "L" ? -1 : 1;
+        const char leftCharacter = 'L';
+        var turningAmount = int.Parse(x[1..]);
+        var direction = x[0] == leftCharacter ? -1 : 1;
         return Enumerable.Repeat(direction, turningAmount);
       })
       .Aggregate(new RotationInfo(StartingPosition, 0), (current, nextRotation) =>
@@ -61,7 +59,4 @@ public static partial class Day1
   }
 
   private readonly record struct RotationInfo(int CurrentPosition, int TotalZeros);
-
-  [GeneratedRegex(@"(?<direction>L|R)(?<amount>\d+)")]
-  private static partial Regex DirectionRegex();
 }
