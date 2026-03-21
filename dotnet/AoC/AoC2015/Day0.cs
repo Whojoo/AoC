@@ -1,10 +1,12 @@
-﻿namespace AoC2015;
+﻿using Shared;
+
+namespace AoC2015;
 
 public static class Day0
 {
   public static void Run()
   {
-    var lines = File.ReadAllLines("input/day0.txt");
+    var lines = InputReader.ReadChallengeInput(2025, 0);
 
     Console.WriteLine($"Part one: {PartOne(lines)}");
     Console.WriteLine($"Part two: {PartTwo(lines)}");

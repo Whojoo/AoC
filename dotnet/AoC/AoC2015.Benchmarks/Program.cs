@@ -4,4 +4,4 @@ using AoC2015.Benchmarks;
 
 using BenchmarkDotNet.Running;
 
-BenchmarkRunner.Run<Day15Benchmark>();
+BenchmarkRunner.Run<Day16Benchmark>();
