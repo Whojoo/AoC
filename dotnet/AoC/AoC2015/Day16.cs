@@ -38,7 +38,7 @@ public static partial class Day16
 
     return input
       .Select(ParseSue)
-      .First(sue => originalSue.CorrespondsWith(sue))
+      .First(originalSue.CorrespondsWith)
       .GetValueOrDefault(IndexKey);
   }
 
@@ -60,7 +60,7 @@ public static partial class Day16
 
     return input
       .Select(ParseSue)
-      .First(sue => originalSue.CorrespondsWithPluPlus(sue))
+      .First(originalSue.CorrespondsWithPlusPlus)
       .GetValueOrDefault(IndexKey);
   }
 
@@ -89,7 +89,7 @@ public static partial class Day16
     private bool CorrespondsWith(Dictionary<string, int> otherSue) =>
       originalSue.All(kp => !otherSue.TryGetValue(kp.Key, out var otherSueValue) || kp.Value == otherSueValue);
 
-    private bool CorrespondsWithPluPlus(Dictionary<string, int> otherSue)
+    private bool CorrespondsWithPlusPlus(Dictionary<string, int> otherSue)
     {
       var comparisonSue = originalSue.ToDictionary();
       
