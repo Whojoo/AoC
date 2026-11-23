@@ -8,7 +8,7 @@ const startingPosition int = 50
 const numOfOptions int = 100
 
 func Day1(in []string) (int, int, error) {
-	p1, err := part1(in)
+	p1, err := day1Part1(in)
 	if err != nil {
 		return 0, 0, err
 	}
@@ -16,7 +16,7 @@ func Day1(in []string) (int, int, error) {
 	return p1, 0, nil
 }
 
-func part1(input []string) (int, error) {
+func day1Part1(input []string) (int, error) {
 	o, err := mapToOrders(input)
 
 	if err != nil {
